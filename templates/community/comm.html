@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Mashead header-->
+<header class="p-5">
+    <div class="container px-5 px-lg-5 my-5 mt-10">
+        <h5>커뮤니티</h5>
+        <div class="row">
+            <div class="col-sm-6">
+                <label style="margin-right: 8px;" class="">
+                    <div class="icheckbox_square-blue" style="position: relative;"><input type="checkbox" id="check-all" class="icheck" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                </label>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger" data-toggle="dropdown">
+                        지역선택 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">강남구</a></li>
+                    </ul>
+                </div>
+                <p style="float:right; flex-direction:column;">마트 할인</p><input type="checkbox" style="float:right;">
+            </div>
+            <div class="col-md-6 search-form">
+                <form action="#" class="text-right">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" class="btn btn-danger btn-sm search"><i class="fa fa-search"></i></button></span>
+                    </div>			 
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <!--td class="action"><input type="checkbox" /></!--td-->
+                        <th>번호</th>
+                        <!--td class="action"><i class="fa fa-star-o"></i></!--td-->
+                        <th>지역</th>
+                        <th class="action"><i class="fa fa-bookmark-o"></i></th>
+                        <th class="name">작성자</th>
+                        <th class="subject">제목</th>
+                        <th class="time">작성일시</th>
+                    </tr>
+                    <tr>
+                        <td class="action">1</td>
+                        <td class="action">강남구</i></td>
+                        <td class="action"><i class="fa fa-bookmark-o"></i></td>
+                        <td class="name"><a href="#">Larry Gardner</a></td>
+                        <td class="subject"><a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed </a></td>
+                        <td class="time">08:30 PM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="pagination">
+            <li class="disabled"><a href="#">«</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">»</a></li>
+        </ul>						
+    </div>
+</header>
+{% endblock %}

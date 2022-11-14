@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Header-->
+<header class="p-5" style="background-color : #FFCC66;">
+    <div class="container px-5 px-lg-5 my-5 mt-10">
+        <div class="text-center text-white"style="width:center; height:center;" >
+            <br><br><br>
+            <h1 class="display-4 fw-bolder b-1" >체크 상품을 담으시겠습니까?</h1>
+            <p class="lead fw-normal b-2" style="width:center;">맞으면 '네' 아니면 추가 하거나 뺄 항목을 말씀해주세요</p>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section class="py-4"> <!--px4 lg-5 2 3-->
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-8 gx-lg-10 row-cols-2 row-cols-md-4 row-cols-xl-5 justify-content-center">
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">자른미역</h5>
+                            <!-- Product price-->
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <label><input type="checkbox" style="width:30px; height:30px; accent-color: #FF5E05;" checked></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
