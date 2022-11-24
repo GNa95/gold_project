@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0"
+/>
+<section class="gold-102 px-5 bg-white">
+  <div class="container gold-101 my-3 mt-5" style="display: flex; flex-wrap: wrap;">
+    <div class="col-lg-2">
+      <table class="col-md-12">
+        <tbody>
+          <tr
+            onclick="location.href='{% url 'user:history_sale' %}'"
+            style="cursor: hand"
+          >
+            <td class="col-md-3" style="text-align: center; min-width: 40px">
+              <span class="material-symbols-outlined">history</span>
+            </td>
+            <td class="col-md-9" style="font-size: 11pt; min-width: 130px">
+              검색 이력
+            </td>
+          </tr>
+          <tr>
+            <td class="col-md-3" style="text-align: center">
+              <span class="material-symbols-outlined">settings</span>
+            </td>
+            <td class="col-md-9" style="font-size: 11pt">회원 정보 수정</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End Col -->
+    <div class="col-lg-10">
+      <div class="card-style">
+        <div>
+          <div class="py-2">
+            <h4>회원 정보 수정</h4>
+          </div>
+          <!-- End Title -->
+          <div class="container my-3" style="width: 65vmin">
+            <form method="post" action="{% url 'user:signup' %}">
+              {% csrf_token %}
+              <div class="mb-4">
+                <label for="id" class="col-md-4 text-right">사용자 ID<span style="color: red"> * </span>:</label>
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="id"
+                    id="id"
+                    value="{{ form.id.value|default_if_none:'' }}"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="username" class="col-md-4 text-right"
+                  >사용자 이름<span style="color: red"> * </span>:</label
+                >
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="username"
+                    id="username"
+                    value="{{ form.username.value|default_if_none:'' }}"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="password1" class="col-md-4 text-right"
+                  >비밀번호<span style="color: red"> * </span>:</label
+                >
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="password1"
+                    id="password1"
+                    value="{{ form.password1.value|default_if_none:'' }}"
+                  />
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="password2" class="col-md-4 text-right"
+                  >비밀번호 확인<span style="color: red"> * </span>:</label
+                >
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="password2"
+                    id="password2"
+                    value="{{ form.password2.value|default_if_none:'' }}"
+                  />
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="phone" class="col-md-4 text-right"
+                  >전화번호<span style="color: red"> * </span>:</label
+                >
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="phone"
+                    id="phone"
+                    value="{{ form.phone.value|default_if_none:'' }}"
+                  />
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="addr" class="col-md-4 text-right"
+                  >주소<span style="color: red"> * </span>:</label
+                >
+                <div class="col-md-7 gold-106">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="addr"
+                    id="addr"
+                    value="{{ form.addr.value|default_if_none:'' }}"
+                  />
+                </div>
+              </div>
+              <div class="text-center pt-sm-4">
+                <button type="submit" class="btn btn-danger">수정완료</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Col -->
+  </div>
+</section>
+{% endblock %}

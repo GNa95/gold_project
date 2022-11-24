@@ -1,0 +1,103 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0"
+/>
+<section class="gold-102 px-5 bg-white">
+  <div class="container gold-101 my-3 mt-5" style="display: flex; flex-wrap: wrap">
+    <div class="col-lg-2">
+      <table class="col-md-12">
+        <tbody>
+          <tr>
+            <td class="col-md-3" style="text-align: center; min-width: 40px">
+              <span class="material-symbols-outlined">history</span>
+            </td>
+            <td class="col-md-9" style="font-size: 11pt; min-width: 130px">
+              검색 이력
+            </td>
+          </tr>
+          <tr
+            onclick="location.href='{% url 'user:member_edit' %}'"
+            style="cursor: hand"
+          >
+            <td class="col-md-3" style="text-align: center">
+              <span class="material-symbols-outlined">settings</span>
+            </td>
+            <td class="col-md-9" style="font-size: 11pt">회원 정보 수정</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End Col -->
+    <div class="col-lg-10">
+      <div class="card-style">
+        <div
+          class="title d-flex flex-wrap align-items-center justify-content-between"
+        >
+          <div class="py-2 gold-104">
+            <h4>검색 이력</h4>
+          </div>
+          <div>
+            <div class="select-style-1">
+              <div class="select-position select-sm">
+                <select class="light-bg">
+                  <option value="day">오늘</option>
+                  <option value="month">이번달</option>
+                </select>
+              </div>
+            </div>
+            <!-- end select -->
+          </div>
+        </div>
+        <!-- End Title -->
+        <div class="table-responsive">
+          <table class="table top-selling-table">
+            <thead>
+              <tr>
+                <th>요리명</th>
+                <th class="d-sm-table-cell">재료</th>
+                <th class="d-sm-table-cell">장소</th>
+                <th>날짜</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody id="my-tbody">
+              <tr>
+                <td>
+                  <div>
+                    <p class="status-btn close-btn">미역국</p>
+                  </div>
+                </td>
+                <td>
+                  <p class="gold-105">미역, 간장 등</p>
+                </td>
+                <td>
+                  <p class="gold-105">이수역</p>
+                </td>
+                <td>
+                  <p class="gold-105">2022/11/12</p>
+                </td>
+                <td>
+                  <span class="material-symbols-outlined gold-105" onclick="delete_row(this)">delete</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Table -->
+        </div>
+      </div>
+    </div>
+    <!-- End Col -->
+  </div>
+</section>
+{% endblock %}
+{% block script %}
+<script>
+  function delete_row(obj) {
+    var my_tbody = document.getElementById('my-tbody');
+    if(my_tbody.rows.length<2) return;
+    var tr = $(obj).parent().parent();
+    tr.remove();
+  }
+</script>
+{% endblock%}

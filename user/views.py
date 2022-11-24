@@ -5,6 +5,7 @@ from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
+from main.models import TbGdCd
 
 # Create your views here.
 
@@ -125,4 +126,24 @@ def inquirys(request):
 #     else:
 #         form = UserForm()
 #     return render(request, 'user/signup.html', {'form':form})
+
+
+
+
+
+
+# mypage
+def history_search(request):
+    return render(request, 'user/history_search.html', {})
+
+def history_sale(request):
+    return render(request, 'user/history_sale.html', {})
+
+
+def member_edit(request):
+    return render(request, 'user/member_edit.html', {})
+
+def sale_upload(request):
+    gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
+    return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd})
 
