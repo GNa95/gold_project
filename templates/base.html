@@ -34,8 +34,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'community:comm' %}">커뮤니티</a></li>
-                        <li class="nav-item"><a class="nav-link me-lg-3" href="#top">마트검색</a></li>
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'community:board_list' %}">커뮤니티</a></li>
+                        <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'mart:martSearch' %}">마트검색</a></li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
@@ -78,7 +78,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-danger p-4">
-                        <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">Send feedback</h5>
+                        <h5 class="modal-title font-alt text-white" id="feedbackModalLabel">문의하기</h5>
                         <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body border-0 p-4">
@@ -89,31 +89,24 @@
                         <!-- To make this form functional, sign up at-->
                         <!-- https://startbootstrap.com/solution/contact-forms-->
                         <!-- to get an API token!-->
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <form action="{% url 'user:inquirys' %}" method="post" id="contactForm">{% csrf_token %}
                             <!-- Name input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                <label for="name">Full name</label>
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                                <input class="form-control" id="name" type="text" placeholder="이름을 적어주세요." data-sb-validations="required" name="quname" />
+                                <label for="name">이름</label>
+                                <div class="invalid-feedback" data-sb-feedback="name:required">이름은 필수입니다.</div>
                             </div>
                             <!-- Email address input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                                <label for="email">Email address</label>
-                                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                            </div>
-                            <!-- Phone number input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                                <label for="phone">Phone number</label>
-                                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                                <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" name="quemail"/>
+                                <label for="email">이메일 주소</label>
+                                <div class="invalid-feedback" data-sb-feedback="email:required">이메일은 필수입니다.</div>
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                                <label for="message">Message</label>
-                                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                <textarea class="form-control" id="message" type="text" placeholder="문의 할 내용을 입력하세요." style="height: 10rem" data-sb-validations="required" name="qutext"></textarea>
+                                <label for="message">문의내용</label>
+                                <div class="invalid-feedback" data-sb-feedback="message:required">문의 내용을 적어주세요</div>
                             </div>
                             <!-- Submit success message-->
                             <!---->
@@ -121,19 +114,18 @@
                             <!-- has successfully submitted-->
                             <div class="d-none" id="submitSuccessMessage">
                                 <div class="text-center mb-3">
-                                    <div class="fw-bolder">Form submission successful!</div>
-                                    To activate this form, sign up at
+                                    <div class="fw-bolder">문의내용 전송완료</div>
                                     <br />
-                                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                    {% comment %} <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a> {% endcomment %}
                                 </div>
                             </div>
                             <!-- Submit error message-->
                             <!---->
                             <!-- This is what your users will see when there is-->
                             <!-- an error submitting the form-->
-                            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">문의 오류</div></div>
                             <!-- Submit Button-->
-                            <div class="d-grid"><button class="btn btn-danger rounded-pill btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                            <div class="d-grid"><button class="btn-danger rounded-pill btn-lg" id="submitButton" type="submit">문의하기</button></div>
                         </form>
                     </div>
                 </div>
@@ -148,5 +140,9 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <!-- 자바스크립트 Start -->
+        {% block script %}
+        {% endblock %}
+        <!-- 자바스크립트 End -->
     </body>
 </html>

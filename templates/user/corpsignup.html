@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% comment %} 회사 회원가입 {% endcomment %}
 {% load static %}
 {% block content %}
 <section class="py-10 bg-white">
     <div class="container my-3 mt-5" style="width:65vmin">
-        <form method="post" action="{% url 'user:signup' %}">
+        <form method="post" action="{% url 'user:corpsignup' %}">
             {% csrf_token %}
             {% include "form_errors.html" %}
             <div class="mb-4">
@@ -13,7 +14,7 @@
                 </div>
             </div>
             <div class="mb-4">
-                <label for="username" class="col-md-4 text-right">사용자 이름<span style="color:red;"> * </span>:</label>
+                <label for="username" class="col-md-4 text-right">회사명<span style="color:red;"> * </span>:</label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
                 </div>
@@ -31,20 +32,21 @@
                 </div>
             </div>
             <div class="mb-4">
-                <label for="user_phone" class="col-md-4 text-right">전화번호<span style="color:red;"> * </span>:</label>
+                <label for="user_phone" class="col-md-4 text-right">회사 전화번호<span style="color:red;"> * </span>:</label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" name="user_phone" id="user_phone" value="{{ form.user_phone.value|default_if_none:'' }}">
                 </div>
             </div>
             <div class="mb-4">
-                <label for="user_addr" class="col-md-4 text-right">주소<span style="color:red;"> * </span>:</label>
+                <label for="user_addr" class="col-md-4 text-right">회사 주소<span style="color:red;"> * </span>:</label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" name="user_addr" id="user_addr" value="{{ form.user_addr.value|default_if_none:'' }}">
                 </div>
             </div>
             <div class="mb-4">
+                
                 <div class="col-md-7">
-                    <input type="hidden" class="form-control" name="user_level" id="user_level" value="1">
+                    <input type="hidden" class="form-control" name="user_level" id="user_level" value="2">
                 </div>
             </div>
             <div style="text-align: center;">

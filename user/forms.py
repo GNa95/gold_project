@@ -1,13 +1,76 @@
 from django import forms
+from .models import User
+from argon2 import PasswordHasher, exceptions
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-class UserForm(UserCreationForm):
-    # email = forms.EmailField(label="이메일")
-    phone = forms.CharField(label="핸드폰 번호")
-    gender = forms.BooleanField(required=False)
-    birth = forms.DateField(label="이메일")
-    addr = forms.CharField(label="주소")
-    class Meta:
-        model = User
-        fields = ("id","username","password1","password2","phone","gender","birth","addr")
+
+
+# class UserForm(UserCreationForm):
+#     # email = forms.EmailField(label="이메일")
+#     user_id = forms.CharField(label="아이디")
+#     user_phone = forms.CharField(label="핸드폰 번호",required=False)
+#     user_addr = forms.CharField(label="주소", required=False)
+#     class Meta:
+#         model = get_user_model()
+#         fields = ("user_id","username","password1","password2","user_phone","user_addr")
+
+class LoginForm(forms.Form):
+    user_id = forms.CharField(
+        max_length=32,
+        label='아이디',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class' : 'user_id',
+                'placeholder' : '아이디'
+            }
+        ),
+        error_messages={'required' : '아이디를 입력'}
+    )
+
+    password = forms.CharField(
+        max_length=128,
+        label='비밀번호',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                'class' : 'password',
+                'placeholder' : '비밀번호'
+            }
+        ),
+        error_messages={'required' : '비밀번호를 입력'}
+    )
+
+    field_order = [
+        'user_id',
+        'password'
+    ]
+
+    def clean(self):
+        print("cleanskdjflwjeo")
+        cleaned_data = super().clean()
+ 
+        user_id = cleaned_data.get('user_id', '')
+        password = cleaned_data.get('password', '')
+        if user_id == '':
+            print("user_id")
+            return self.add_error('user_id', '아이디를 다시 입력')
+        elif user_id == '':
+            print("password")
+            return self.add_error('password', '비밀번호를 다시 다시')
+        else:
+            try:
+                print("try")
+                user = User.objects.get(user_id=user_id)
+            except User.DoesNotExist:
+                print("except")
+                return self.add_error('user_id', '아이디가 존재 안한당')
+
+            try:
+                print("try2")
+                PasswordHasher().verify(user.password, password)
+            except exceptions.VerifyMismatchError:
+                print("except2")
+                return self.add_error('password', '비밀번호가 다르덩')
+

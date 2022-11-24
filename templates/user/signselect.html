@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="py-10 bg-white">
+    <form method="post" class="post-form" action="{% url 'user:signselect' %}">
+    <div class="container px-5 mt-5"  style="width:65vmin">
+        <a href="{% url 'user:signup' %}"><img src="{% static '/assets/img/11.png' %}" style="width:350px; height:250px"></a>
+        <a href="{% url 'user:corpsignup' %}"><img src="{% static '/assets/img/ddang.jpg' %}" style="width:350px; height:250px"></a>
+</section>
+{% endblock %}

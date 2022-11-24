@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'community.apps.CommunityConfig',
     'user.apps.UserConfig',
     'main.apps.MainConfig',
+    'mart.apps.MartConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

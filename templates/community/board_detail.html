@@ -1,0 +1,53 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="mb-1 p-sm-5">
+    <div class="row gold-1">
+
+        <label for="title" class="form-label">제목</label>
+        <input type="text" class="form-control col-sm-7" id="title" value="{{ board.title }}" readonly>
+
+        <label for="content" class="py-4">내용</label>
+        <textarea class="form-control" readonly>{{ board.content }}</textarea>
+
+        <form method="POST" action="{% url 'community:reply_create' board.id %}">
+            {% csrf_token %}
+            {% if ReplyForm.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for field in ReplyForm %}
+                    {% if field.errors %}
+                        <strong>{{ field.label }}</strong>
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!--댓글 뿌려주기-->
+            {% for comment in comment_view %}
+            <hr>
+            <!--p>{{ comment.author }}</p-->
+            <p>작성자</p>
+            <p>{{ comment.reply }}</p>
+            <hr>
+            {% endfor %}
+
+            <!--댓글 입력-->
+            <div class="form-group py-3">
+                <textarea name="reply" id="reply" rows="2" class="form-control"></textarea>
+            </div>
+            <input type="submit" value="댓글 입력" class="py-1" style="position:absolute; right:11rem;">
+            <button type="button" class="btn btn-primary" onclick="location.href='/comm/board'">돌아가기</button>
+        </form>
+
+    </div>
+
+    <!--목록으로 돌아가기-->
+<!--    <div class="col-6">-->
+<!--        -->
+<!--    </div>-->
+
+</div>
+{% endblock %}
+
