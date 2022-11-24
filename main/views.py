@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from main.models import TbRecipe,TbIrdent
+from main.models import TbRecipe,TbIrdent,TbGds
 from django.db import connection
-from django.db.models import Q
+import random
+from pandas import DataFrame
+import pandas as pd
 # Create your views here.
 
 def index(request):
@@ -29,25 +31,14 @@ def second(request):
 def third(request):
   test = "냉면"
   cursor = connection.cursor()
-  sqlIrdent = "select irdnt_nm,r.recipe_num from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
   sqlSum = "select sum(r.recipe_num) from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
-  sqlDan = "select tb_gds.GD_NM, tb_gds.GD_UNIT, tb_gds.GD_UNIT_CD, tb_irdent.IRDNT_NM, tb_recipe.RECIPE_NUM from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD where RECIPE_NM like '"+ test + "';"
+  sqlAll = "select * from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD where RECIPE_NM like '"+ test + "' order by rand();"
 
-  cursor.execute(sqlIrdent)
-  result_irdent = cursor.fetchall()
   cursor.execute(sqlSum)
   result_sum = cursor.fetchall()
-  cursor.execute(sqlDan)
-  result_dan = cursor.fetchall()
+  cursor.execute(sqlAll)
+  result_all = cursor.fetchall()
   connection.close()
-
-  irdent = []
-  for data in result_irdent:
-    row = {
-      'idn': data[0],
-      'num': data[1]
-    }
-    irdent.append(row)
 
   sum = []
   for data in result_sum:
@@ -56,17 +47,31 @@ def third(request):
     }
     sum.append(row)
 
-  dan = []
-  for data in result_dan:
+  all = []
+  for data in result_all:
     row = {
-      'dan1': data[1],
-      'dan2': data[2],
-      'idn': data[0],
-      'num': data[4]
-
+      'num': data[0],
+      'name': data[7],
+      'type': data[9],
+      'menu': data[12],
+      'jejosa': data[16]
     }
-    dan.append(row)
+    all.append(row)
 
-  return render(request, 'main/third.html',{"irdent":irdent,"sum":sum,"dan":dan})
+  df = pd.DataFrame(all,columns=['num','name','type','menu','jejosa'])
+  irdent = df.drop_duplicates(['type']).sort_values('type')
+  irdent_all = irdent.values.tolist()
+
+  alls = []
+  for data in irdent_all:
+    row = {
+      'num': data[0],
+      'name': data[1],
+      'menu': data[3],
+      'jejosa': data[4]
+    }
+    alls.append(row)
+
+  return render(request, 'main/third.html',{"alls":alls,"sum":sum})
 
 
