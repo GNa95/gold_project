@@ -74,6 +74,27 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class CommunityMainboard(models.Model):
+    area = models.CharField(max_length=8)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_dt = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'community_mainboard'
+
+
+class CommunityReply(models.Model):
+    reply = models.TextField()
+    created_dt = models.DateTimeField()
+    post = models.ForeignKey(CommunityMainboard, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'community_reply'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -207,3 +228,26 @@ class TbUnit(models.Model):
     class Meta:
         managed = False
         db_table = 'tb_unit'
+
+
+class ThSearch(models.Model):
+    ht_num = models.AutoField(db_column='HT_NUM', primary_key=True)  # Field name made lowercase.
+    username = models.CharField(max_length=30)
+    recipe_nm = models.CharField(db_column='RECIPE_NM', max_length=50)  # Field name made lowercase.
+    irdnt_nm = models.CharField(db_column='IRDNT_NM', max_length=50)  # Field name made lowercase.
+    gd_nm = models.CharField(db_column='GD_NM', max_length=100)  # Field name made lowercase.
+    ht_date = models.DateTimeField(db_column='HT_DATE', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'th_search'
+
+
+class UserSecinquiry(models.Model):
+    inquirys_name = models.CharField(max_length=20)
+    inquirys_email = models.CharField(max_length=30)
+    inquirys_text = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'user_secinquiry'
