@@ -6,6 +6,5 @@ app_name = 'main'
 urlpatterns = [
     path('',views.index, name="index"),
     path('second/',views.second, name="second"),
-    path('third/',views.third, name="third"),
-    path('test/',views.test, name='test')
+    path('third/',views.third, name="third")
 ]
