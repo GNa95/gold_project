@@ -5,7 +5,11 @@ from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
+<<<<<<< HEAD
 from main.models import TbGdCd
+=======
+from django.conf import settings
+>>>>>>> main
 
 # Create your views here.
 
@@ -65,10 +69,8 @@ def login(request):
         return render(request, 'user/login.html', context)
     elif request.method == 'POST':
         loginform = LoginForm(request.POST)
-
         if loginform.is_valid():
-
-            request.session['login_session'] = User.user_id
+            request.session['login_session'] = loginform.login_session
             request.session.set_expiry(0)
 
             return redirect('main:index')
@@ -77,22 +79,16 @@ def login(request):
             if loginform.errors:
                 for value in loginform.errors.values():
                     context['error'] = value
-                    
+
+        
         return render(request, 'user/login.html', context)
 
 # 로그아웃
 def logout(request):
     request.session.flush()
-
-    context = {}
-    login_session = request.session.get('loginsession', '')
-
-    if login_session == '':
-        context['login_session'] = False
-    else:
-        context['login_session'] = True
-
-    return redirect(request, 'main:index', context)
+    # if request.session.get('login_session'):
+    #     del request.session['login_session']
+    return redirect('/')
 
 
 #문의하기
@@ -107,6 +103,7 @@ def inquirys(request):
     return render(request, 'main/index.html')
 
 
+<<<<<<< HEAD
 
 # def signup(request):
 #     if request.method == "POST":
@@ -147,3 +144,5 @@ def sale_upload(request):
     gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
     return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd})
 
+=======
+>>>>>>> main
