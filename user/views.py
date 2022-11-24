@@ -114,3 +114,4 @@ def sale_upload(request):
     gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
     return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd})
 
+
