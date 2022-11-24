@@ -39,7 +39,7 @@
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            {% if user.is_authenticated %}
+                            {% if login_session %}
                                 <a class="nav-link me-lg-3" href="{% url 'user:logout' %}">{{ user.username }} (로그아웃)</a>
                             {% else %}
                                 <a class="nav-link me-lg-3" href="{% url 'user:login' %}">로그인</a>

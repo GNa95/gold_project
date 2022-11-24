@@ -48,29 +48,23 @@ class LoginForm(forms.Form):
     ]
 
     def clean(self):
-        print("cleanskdjflwjeo")
         cleaned_data = super().clean()
  
         user_id = cleaned_data.get('user_id', '')
         password = cleaned_data.get('password', '')
         if user_id == '':
-            print("user_id")
             return self.add_error('user_id', '아이디를 다시 입력')
         elif user_id == '':
-            print("password")
             return self.add_error('password', '비밀번호를 다시 다시')
         else:
             try:
-                print("try")
                 user = User.objects.get(user_id=user_id)
             except User.DoesNotExist:
-                print("except")
                 return self.add_error('user_id', '아이디가 존재 안한당')
 
             try:
-                print("try2")
                 PasswordHasher().verify(user.password, password)
             except exceptions.VerifyMismatchError:
-                print("except2")
                 return self.add_error('password', '비밀번호가 다르덩')
-
+            
+            self.login_session = user.user_id

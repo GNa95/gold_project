@@ -5,6 +5,7 @@ from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
+from django.conf import settings
 
 # Create your views here.
 
@@ -64,10 +65,8 @@ def login(request):
         return render(request, 'user/login.html', context)
     elif request.method == 'POST':
         loginform = LoginForm(request.POST)
-
         if loginform.is_valid():
-
-            request.session['login_session'] = User.user_id
+            request.session['login_session'] = loginform.login_session
             request.session.set_expiry(0)
 
             return redirect('main:index')
@@ -76,22 +75,16 @@ def login(request):
             if loginform.errors:
                 for value in loginform.errors.values():
                     context['error'] = value
-                    
+
+        
         return render(request, 'user/login.html', context)
 
 # 로그아웃
 def logout(request):
     request.session.flush()
-
-    context = {}
-    login_session = request.session.get('loginsession', '')
-
-    if login_session == '':
-        context['login_session'] = False
-    else:
-        context['login_session'] = True
-
-    return redirect(request, 'main:index', context)
+    # if request.session.get('login_session'):
+    #     del request.session['login_session']
+    return redirect('/')
 
 
 #문의하기
@@ -105,24 +98,4 @@ def inquirys(request):
         new_inquirys.save()
     return render(request, 'main/index.html')
 
-
-
-# def signup(request):
-#     if request.method == "POST":
-#         form = UserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             user_id = form.cleaned_data.get('username')            
-#             raw_password = form.cleaned_data.get('password1')
-#             user_name = form.cleaned_data.get('user_id')
-#             user_phone = form.cleaned_data.get('user_phone')
-#             user_addr = form.cleaned_data.get('user_addr') 
-#             usersave = User(username=user_id, password=raw_password, userid=user_name , userPhone=user_phone, useraddr=user_addr)
-#             usersave.save()
-#             user = authenticate(username=user_id, password=raw_password) # 사용자 인증
-#             login(request, user) # 로그인
-#             return redirect('main:index')
-#     else:
-#         form = UserForm()
-#     return render(request, 'user/signup.html', {'form':form})
 

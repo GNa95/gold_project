@@ -5,7 +5,13 @@ from django.db.models import Q
 # Create your views here.
 
 def index(request):
-  return render(request, 'main/index.html', {})
+  context = {}
+  login_session = request.session.get('login_session', '')
+  if login_session == '':
+      context['login_session'] = False
+  else:
+      context['login_session'] = True
+  return render(request, 'main/index.html', context)
 
 def second(request):
   test = "냉면"
