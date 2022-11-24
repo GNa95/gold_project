@@ -1185,7 +1185,6 @@ progress {
   .col-md-7 {
     flex: 0 0 auto;
     width: 58.33333333%;
-    float: right;
   }
 
   .col-md-8 {
@@ -11811,19 +11810,11 @@ a{
 
 /* community dropdown end */
 
-
-
-/* 
-@media (min-width:992px){
-  .col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9{
-    float:left;
-  }
-} */
-
-
+/* signup 관련 css */
 .text-right{
   text-align:right;
 }
+
 
 /* app당 50개씩 */
 /* community css */
@@ -11835,17 +11826,34 @@ a{
 
 /* main css */
 .gold-51 {
-
+  padding: 20px /* 임시 */
 }
 
 /* user css */
 .gold-101 {
-
+  height: calc(70vh - 20px);
+}
+.gold-102 {
+  padding-top: 6rem !important;
+}
+.gold-103 {
+  padding-right: 10rem !important;
+  padding-left: 10rem !important;
+}
+.gold-104 {
+  margin-bottom: 30px;
+}
+.gold-105 {
+  font-size: 14px;
+  line-height: 22px;
+}
+.gold-106 {
+  float: right;
 }
 
 /* mart css */
 .gold-151 {
-  
+  padding: 20px /* 임시 */
 }
 
 
@@ -12037,4 +12045,147 @@ a{
 }
 
 /* map style end */
+
+/* cart style start */
+.card-style {
+  background: #fff;
+  box-sizing: border-box;
+  padding: 25px 30px;
+  position: relative;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0px 10px 20px rgba(200, 208, 216, 0.3);
+  border-radius: 10px;
+}
+
+@media (max-width: 767px) {
+  .card-style {
+      padding: 20px;
+  }
+}
+
+.card-style .jvm-zoom-btn {
+  position: absolute;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  right: 30px;
+  bottom: 30px;
+  cursor: pointer;
+}
+
+.card-style .jvm-zoom-btn.jvm-zoomin {
+  bottom: 70px;
+}
+
+.card-style .dropdown-toggle {
+  border: none;
+  background: none;
+}
+
+.card-style .dropdown-toggle::after {
+  display: none;
+}
+
+.card-style .dropdown-menu {
+  -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.07);
+  -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.07);
+}
+
+.card-style .dropdown-menu li:hover a {
+  color: #4a6cf7 !important;
+}
+
+.card-style .dropdown-menu li a {
+  display: block;
+  font-size: 14px;
+}
+
+/* cart style end */
+
+
+
+/* ========= select style ========== */
+.select-style-1 {
+  margin-bottom: 30px;
+}
+
+.select-style-1 label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262d3f;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.select-style-1 .select-position {
+  position: relative;
+}
+
+.select-style-1 .select-position::after {
+  border-bottom: 2px solid #5d657b;
+  border-right: 2px solid #5d657b;
+  content: "";
+  display: block;
+  height: 10px;
+  width: 10px;
+  margin-top: -5px;
+  pointer-events: none;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+
+.select-style-1 .select-position.select-sm::after {
+  margin-top: -8px;
+}
+
+.select-style-1 .select-position.select-sm select {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 14px;
+}
+
+.select-style-1 .select-position select {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 16px;
+  padding-right: 38px;
+  color: #5d657b;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-transition: all 0.3s ease-out 0s;
+  -moz-transition: all 0.3s ease-out 0s;
+  -ms-transition: all 0.3s ease-out 0s;
+  -o-transition: all 0.3s ease-out 0s;
+  transition: all 0.3s ease-out 0s;
+}
+
+.select-style-1 .select-position select:focus {
+  border-color: #4a6cf7;
+  outline: none;
+}
+
+.select-style-1 .select-position select.light-bg {
+  background: rgba(239, 239, 239, 0.5);
+}
+
+.select-style-1 .select-position select.light-bg:focus {
+  background: #fff;
+}
+
+.select-style-1 .select-position select.radius-30 {
+  border-radius: 30px;
+}
 

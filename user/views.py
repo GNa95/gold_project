@@ -5,7 +5,11 @@ from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
+<<<<<<< HEAD
+from main.models import TbGdCd
+=======
 from django.conf import settings
+>>>>>>> main
 
 # Create your views here.
 
@@ -99,3 +103,46 @@ def inquirys(request):
     return render(request, 'main/index.html')
 
 
+<<<<<<< HEAD
+
+# def signup(request):
+#     if request.method == "POST":
+#         form = UserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             user_id = form.cleaned_data.get('username')            
+#             raw_password = form.cleaned_data.get('password1')
+#             user_name = form.cleaned_data.get('user_id')
+#             user_phone = form.cleaned_data.get('user_phone')
+#             user_addr = form.cleaned_data.get('user_addr') 
+#             usersave = User(username=user_id, password=raw_password, userid=user_name , userPhone=user_phone, useraddr=user_addr)
+#             usersave.save()
+#             user = authenticate(username=user_id, password=raw_password) # 사용자 인증
+#             login(request, user) # 로그인
+#             return redirect('main:index')
+#     else:
+#         form = UserForm()
+#     return render(request, 'user/signup.html', {'form':form})
+
+
+
+
+
+
+# mypage
+def history_search(request):
+    return render(request, 'user/history_search.html', {})
+
+def history_sale(request):
+    return render(request, 'user/history_sale.html', {})
+
+
+def member_edit(request):
+    return render(request, 'user/member_edit.html', {})
+
+def sale_upload(request):
+    gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
+    return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd})
+
+=======
+>>>>>>> main
