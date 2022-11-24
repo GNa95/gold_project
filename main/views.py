@@ -4,6 +4,7 @@ from django.db import connection
 import random
 from pandas import DataFrame
 import pandas as pd
+from django.core import serializers
 # Create your views here.
 
 def index(request):
@@ -32,7 +33,9 @@ def third(request):
   test = "냉면"
   cursor = connection.cursor()
   sqlSum = "select sum(r.recipe_num) from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
-  sqlAll = "select * from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD where RECIPE_NM like '"+ test + "' order by rand();"
+  sqlAll = "select tb_recipe.RECIPE_NUM, IRDNT_NM, tb_gds.gd_type_cd, GD_NM, GD_ENT_NM "\
+          + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
+          + "where RECIPE_NM like '"+ test + "' order by rand();"
 
   cursor.execute(sqlSum)
   result_sum = cursor.fetchall()
@@ -47,31 +50,12 @@ def third(request):
     }
     sum.append(row)
 
-  all = []
-  for data in result_all:
-    row = {
-      'num': data[0],
-      'name': data[7],
-      'type': data[9],
-      'menu': data[12],
-      'jejosa': data[16]
-    }
-    all.append(row)
-
-  df = pd.DataFrame(all,columns=['num','name','type','menu','jejosa'])
+  df = pd.DataFrame(result_all,columns=['num','name','type','goods','jejosa'])
   irdent = df.drop_duplicates(['type']).sort_values('type')
-  irdent_all = irdent.values.tolist()
+  irdent_all = irdent.T.to_dict()
 
-  alls = []
-  for data in irdent_all:
-    row = {
-      'num': data[0],
-      'name': data[1],
-      'menu': data[3],
-      'jejosa': data[4]
-    }
-    alls.append(row)
+  print(irdent_all)
 
-  return render(request, 'main/third.html',{"alls":alls,"sum":sum})
+  return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum})
 
 

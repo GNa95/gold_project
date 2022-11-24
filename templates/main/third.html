@@ -18,14 +18,14 @@
             </thead>
             <tbody>
                 <tr>
-                        {% for list in alls %}
+                        {% for value in irdent_all.values %}
                         <td><img src="{% static '/images/cham-1.png' %}"></td>
-                            <td>{{ list.name }}</td>
-                            <td>{{ list.menu }}</td>
-                            <td>{{ list.jejosa }}</td>
-                            <td>{{ list.num }}</td>
-                            <td>{{ list.num }}</td>
-                            <td>{{ list.num }}</td>
+                        <td>{{ value.name }}</td>
+                        <td>{{ value.goods }}</td>
+                        <td>{{ value.jejosa }}</td>
+                        <td>{{ value.num }}</td>
+                        <td>{{ value.num }}</td>
+                        <td>{{ value.num }}</td>
                 </tr>
                         {% endfor %}
             </tbody>
