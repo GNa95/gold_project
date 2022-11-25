@@ -8,16 +8,18 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="btn-group">
-<!--                        <button type="button" class="btn btn-danger" data-toggle="dropdown">-->
-                            <select type="button" class="btn btn-danger" data-toggle="dropdown" id="area_filter">
-                                <option><span class="caret"></span>지역선택</option>
-			                    {% for list in all_area %}
-				                <option id="area_search" value="{{ list.ent_area_cd }}">{{ list.ent_area_nm }}</option>
-			                    {% endfor %}
-	                        </select>
-<!--                    </button>-->
+                    <button type="button" class="btn btn-danger" data-toggle="dropdown">지역선택
+                        <select class="form-select form-select-sm" id="area_filter">
+			                {% for list in all_area %}
+                                {% if list.ent_area_cd == area_text %}
+                                    <option value="{{ list.ent_area_cd }}" selected>{{ list.ent_area_nm }}123456789</option>
+                                {% else %}
+                                    <option value="{{ list.ent_area_cd }}">{{ list.ent_area_nm }}</option>
+                                {% endif %}
+			                {% endfor %}
+	                    </select>
+                    </button>
                 </div>
-                <!--<p style="float:right; flex-direction:column;">마트 할인</p><input type="checkbox" style="float:right;">-->
             </div>
             <div class="col-6">
             <div class="input-group">
@@ -30,15 +32,12 @@
 
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive pt-3">
             <table class="table">
                 <tbody>
                     <tr>
-                        <!--td class="action"><input type="checkbox" /></!--td-->
                         <th>번호</th>
-                        <!--td class="action"><i class="fa fa-star-o"></i></!--td-->
                         <th>지역</th>
-                        <!--th class="action"><i class="fa fa-bookmark-o"></i></th-->
                         <th class="name">작성자</th>
                         <th class="subject">제목</th>
                         <th class="time">작성일시</th>
@@ -53,7 +52,7 @@
                                     {{ board_list.paginator.count|sub_filter:board_list.start_index|sub_filter:forloop.counter0|add:1 }}
                                 </td>
 
-                                <td class="action">{{ board.area }}</td>
+                                <td class="action">{{ board.get_area_display }}</td>
 
                                 <td class="name"></td>
                                 <td class="text-start">
@@ -81,43 +80,51 @@
 
         </div>
         <!--페이징 처리 시작-->
-        <ul class="pagination justify-content-center">
-            {% if board_list.has_previous %}
-            <li class="page-item">
-                <a class="page-link" data-page="{{ question_list.previous_page_number }}" href="javascript:void(0)">이전</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)">이전</a>
-            </li>
-            {% endif %}
-            <!--페이지 리스트-->
-            {% for page_number in board_list.paginator.page_range %}
-            {% if page_number >= board_list.number|add:-5 and page_number <= board_list.number|add:5 %}
-            {% if page_number == board_list.number %}
-                <li class="page-item active"><a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
-                    {{ page_number }}</a>
-                </li>
-            {% else %}
-                <li class="page-item"><a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
-                    {{ page_number }}</a>
-                </li>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-            <!--다음 페이지-->
-            {% if board_list.has_next %}
-            <li class="page-item"><a class="page-link" data-page="{{ question_list.next_page_number }}" href="javascript:void(0)">다음</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled"><a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)">다음</a>
-            </li>
-            {% endif %}
-        </ul>
-        <!--페이징 처리 끝-->
-        <a href="{% url 'community:board_create' %}" class="btn btn-danger">
-            글 작성
-        </a>
+        <div class="row g-0">
+            <div class="col-sm-6 col-md-8">
+                <ul class="pagination justify-content-center">
+                    {% if board_list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="{{ question_list.previous_page_number }}" href="javascript:void(0)">이전</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)">이전</a>
+                    </li>
+                    {% endif %}
+                    <!--페이지 리스트-->
+                    {% for page_number in board_list.paginator.page_range %}
+                    {% if page_number >= board_list.number|add:-5 and page_number <= board_list.number|add:5 %}
+                    {% if page_number == board_list.number %}
+                        <li class="page-item active"><a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
+                            {{ page_number }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">
+                            {{ page_number }}</a>
+                        </li>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    <!--다음 페이지-->
+                    {% if board_list.has_next %}
+                    <li class="page-item"><a class="page-link" data-page="{{ question_list.next_page_number }}" href="javascript:void(0)">다음</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)">다음</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <!--페이징 처리 끝-->
+            </div>
+            <div class="col-6 col-md-4">
+                <div class="d-grid d-md-flex justify-content-md-end">
+                    <button class="btn btn-danger" type="button">
+                        <a href="{% url 'community:board_create' %}" class="text-white">글 작성</a>
+                    </button>
+                </div>
+            </div>
+        </div>    
     </div>
     <form id="searchForm" method="get" action="{% url 'community:board_list' %}">
         <input type="hidden" id="area" name="area" value="{{ area_text }}">
