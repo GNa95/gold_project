@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from main.models import TbRecipe,TbIrdent,TbGds
 from django.db import connection
-import random
 from pandas import DataFrame
 import pandas as pd
-from django.core import serializers
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 def index(request):
@@ -15,15 +14,13 @@ def index(request):
   else:
       context['login_session'] = True
   return render(request, 'main/index.html', context)
-
+  
 def second(request):
-  test = "냉면"
+  test = '냉면'
   cursor = connection.cursor()
   strSql = "select * from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
   cursor.execute(strSql)
   result = cursor.fetchall()
-  
-  # print(result)
   connection.close()
 
   irdent = []
@@ -59,8 +56,6 @@ def third(request):
   df = pd.DataFrame(result_all,columns=['num','name','type','goods','jejosa'])
   irdent = df.drop_duplicates(['type']).sort_values('type')
   irdent_all = irdent.T.to_dict()
-
-  print(irdent_all)
 
   return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum})
 
