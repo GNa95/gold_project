@@ -230,8 +230,20 @@ class TbUnit(models.Model):
         db_table = 'tb_unit'
 
 
+class TbUser(models.Model):
+    username = models.CharField(unique=True, max_length=50)
+    password = models.CharField(unique=True, max_length=100)
+    user_id = models.CharField(max_length=50)
+    user_phone = models.CharField(max_length=40)
+    user_addr = models.CharField(max_length=40)
+    user_level = models.CharField(max_length=8)
+
+    class Meta:
+        managed = False
+        db_table = 'tb_user'
+
+
 class ThSearch(models.Model):
-    ht_num = models.AutoField(db_column='HT_NUM', primary_key=True)  # Field name made lowercase.
     username = models.CharField(max_length=30)
     recipe_nm = models.CharField(db_column='RECIPE_NM', max_length=50)  # Field name made lowercase.
     irdnt_nm = models.CharField(db_column='IRDNT_NM', max_length=50)  # Field name made lowercase.
@@ -239,15 +251,4 @@ class ThSearch(models.Model):
     ht_date = models.DateTimeField(db_column='HT_DATE', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
         db_table = 'th_search'
-
-
-class UserSecinquiry(models.Model):
-    inquirys_name = models.CharField(max_length=20)
-    inquirys_email = models.CharField(max_length=30)
-    inquirys_text = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'user_secinquiry'
