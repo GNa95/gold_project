@@ -56,6 +56,7 @@ def third(request):
   df = pd.DataFrame(result_all,columns=['num','name','type','goods','jejosa'])
   irdent = df.drop_duplicates(['type']).sort_values('type')
   irdent_all = irdent.T.to_dict()
+  # print(irdent_all)
 
   return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum})
 
