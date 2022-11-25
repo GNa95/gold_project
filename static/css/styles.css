@@ -11823,60 +11823,6 @@ a{
   padding: 20px;
 }
 
-.gold-2 {
-  padding-right: 12rem !important;
-  padding-left: 12rem !important;
-}
-
-.gold-3 {
-  margin-top: 1rem !important;
-  margin-bottom: 10rem !important;
-}
-
-.gold-4 {
-  --bs-bg-opacity: 5;
-  background-color: var(--bs-gray-400) !important;
-  display: inline-block;
-  font-weight: 500;
-  line-height: 1.5;
-  color: #212529;
-  text-align: right;
-  text-decoration: none;
-  vertical-align: middle;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.gold-5 {
-  padding-left: 57rem !important;
-}
-
-.gold-6 {
-  color: black !important;
-}
-
-.gold-7 {
-  position: absolute !important;
-  right: 70rem !important;
-}
-
-.gold-8 {
-  margin-top: 1rem !important;
-  margin-left: 50rem !important;
-}
-
-.gold-9 {
-  padding-right: 20rem !important;
-  padding-left: 20rem !important;
-}
 
 /* main css */
 .gold-51 {

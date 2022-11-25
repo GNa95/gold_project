@@ -17,6 +17,7 @@ def board_list(request):
   page = request.GET.get('page', '1')                           #페이지
   kw = request.GET.get('kw', '')                                #검색어
   board_list = MainBoard.objects.order_by('-created_dt')
+
   if kw:
     board_list = board_list.filter(
       Q(title__icontains=kw) |                                  #제목
@@ -26,15 +27,11 @@ def board_list(request):
     board_list = board_list.filter(
       Q(area__exact=area_text)
     ).distinct()
-  
   paginator = Paginator(board_list, 10)                         #한 페이지당 10개씩 출력
   page_obj = paginator.get_page(page)
 
   context = {'board_list': page_obj, 'page': page, 'kw': kw, 'area_text': area_text, 'all_area': all_area}
   return render(request, 'community/board.html', context)
-
-
-    
 
 
 '''특정 게시글 클릭 시 게시글 속으로 들어가는 기능'''
