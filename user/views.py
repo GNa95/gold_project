@@ -68,16 +68,20 @@ def login(request):
         if loginform.is_valid():
             request.session['login_session'] = loginform.login_session
             request.session.set_expiry(0)
-
             return redirect('main:index')
         else:
             context['forms'] = loginform
             if loginform.errors:
                 for value in loginform.errors.values():
                     context['error'] = value
-
-        
         return render(request, 'user/login.html', context)
+
+# def home(request):
+#     user_pk = request.session.get('user')
+#     if user_pk:
+#         fuser - Fuser.objects.get(pk=user_pk)
+#         return HttpResponse(fuser.username)
+#     return HttpResponse("성공")
 
 # 로그아웃
 def logout(request):

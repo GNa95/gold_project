@@ -18,27 +18,28 @@ from django.contrib.auth import get_user_model
 class LoginForm(forms.Form):
     user_id = forms.CharField(
         max_length=32,
-        label='아이디',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class' : 'user_id',
-                'placeholder' : '아이디'
-            }
-        ),
+        label="아이디",
+        # required=True,
+        # widget=forms.TextInput(
+        #     attrs={
+        #         'class' : 'user_id',
+        #         'placeholder' : '아이디'
+        #     }
+        # ),
         error_messages={'required' : '아이디를 입력'}
     )
 
     password = forms.CharField(
         max_length=128,
-        label='비밀번호',
-        required=True,
-        widget=forms.PasswordInput(
-            attrs={
-                'class' : 'password',
-                'placeholder' : '비밀번호'
-            }
-        ),
+        label="비밀번호",
+        #required=True,
+        widget=forms.PasswordInput,
+       #(
+            # attrs={
+            #     'class' : 'password',
+            #     'placeholder' : '비밀번호'
+            # }
+        #),
         error_messages={'required' : '비밀번호를 입력'}
     )
 
@@ -53,7 +54,7 @@ class LoginForm(forms.Form):
         user_id = cleaned_data.get('user_id', '')
         password = cleaned_data.get('password', '')
         if user_id == '':
-            return self.add_error('user_id', '아이디를 다시 입력')
+            self.add_error('user_id', '아이디를 다시 입력')
         elif user_id == '':
             return self.add_error('password', '비밀번호를 다시 다시')
         else:

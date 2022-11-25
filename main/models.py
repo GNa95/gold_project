@@ -241,13 +241,4 @@ class ThSearch(models.Model):
     class Meta:
         managed = False
         db_table = 'th_search'
-
-
-class UserSecinquiry(models.Model):
-    inquirys_name = models.CharField(max_length=20)
-    inquirys_email = models.CharField(max_length=30)
-    inquirys_text = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'user_secinquiry'
+        

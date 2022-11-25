@@ -12,7 +12,7 @@ def martSearch(request):
   tb_ent = TbEnt.objects.order_by('ent_num')
   if kw:
     tb_ent = tb_ent.filter(
-      Q(ent_addr__icontains=kw) |
+      Q(ent_addr__icontains=kw)|
       Q(ent_nm__icontains=kw)
     ).distinct()
   ent_json = serializers.serialize('json',tb_ent)
@@ -21,5 +21,7 @@ def martSearch(request):
   for ent in ents:
     ent_list.append(ent['fields'])
   entJson = json.dumps(ent_list, ensure_ascii=False)
-  return render(request, 'mart/search.html',{"ent_list":entJson,"login_session":True})
+
+  login_session = request.session.get('login_session', '') #로그인 성공하면 로그아웃 옆에 유저 id값이 나온다.
+  return render(request, 'mart/search.html',{"ent_list":entJson,"login_session":login_session})
   

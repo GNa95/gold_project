@@ -37,8 +37,11 @@ class User(models.Model):
 
 
 
-
+#문의하기의 모델입니다.
 class secinquiry(models.Model):
     inquirys_name = models.CharField(max_length=20)
     inquirys_email = models.CharField(max_length=30)
     inquirys_text = models.TextField(max_length=500)
+
+    class Meta: #3
+        db_table = 'TB_inquiry'
