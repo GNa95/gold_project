@@ -5,20 +5,44 @@
   <div class="container px-5 mt-5"  style="width:65vmin">
     <form method="post" class="post-form" action="{% url 'user:login' %}">
     {% csrf_token %}
-    {% include "form_errors.html" %}
-    <div class="mb-3">
-      <label for="user_id">사용자ID</label>
-      <input type="text" class="form-control" name="user_id" id="user_id" value="{{ form.user_id.value|default_if_none:'' }}">
-    </div>
-    <div class="mb-3">
-      <label for="password">비밀번호</label>
-      <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
-    </div>
+    {% for field in forms %}
+      <div class="mb-3">
+        <label for="{{field.name}}">{{field.label}}</label>
+        <input type="{{field.field.widget.input_type}}" class="form-control" name="{{field.name}}" id="{{field.name}}" value="{{ field.user_id.value|default_if_none:'' }}">
+        {% if field.errors %}
+          <div>{{ field.errors }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
     <button type="submit" class="btn btn-danger">로그인</button>
     <button type="button" class="btn btn-danger" onclick="location.href='{% url 'user:signselect' %}'">회원가입</button>
     </form>
   </div>
 </section>
 {% endblock %}
+{% comment %} {% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="py-10 bg-white">
+  <div class="container px-5 mt-5"  style="width:65vmin">
+    <form method="post" class="post-form" action="{% url 'user:login' %}">
+    {% csrf_token %}
+    {% include "form_errors.html" %} 
+    <div class="mb-3">
+      <label for="user_id">사용자ID</label>
+      <input type="text" class="form-control" name="user_id" id="user_id" value="{{ form.user_id.value|default_if_none:'' }}">
+      <label for="user_id">{{ error }}</label>
+    </div>
+    <div class="mb-3">
+      <label for="password">비밀번호</label>
+      <input type="password" class="form-control" name="password" id="password" value="{{ form.password.value|default_if_none:'' }}">
+      <label for="user_id">{{ error }}</label>
+    </div>
+    <button type="submit" class="btn btn-danger">로그인</button>
+    <button type="button" class="btn btn-danger" onclick="location.href='{% url 'user:signselect' %}'">회원가입</button>
+    </form>
+  </div>
+</section>
+{% endblock %} {% endcomment %}
 
 

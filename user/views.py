@@ -49,7 +49,7 @@ def corpsignup(request):
         elif firstpassword != secpassword:
             return redirect('/user/signup')
         else:
-            usersave = User(username=user_id, password=firstpassword, user_id=user_name , user_phone=user_phone, user_addr=user_addr, user_level=user_level)
+            usersave = User(username=user_id, password=PasswordHasher().hash(firstpassword), user_id=user_name , user_phone=user_phone, user_addr=user_addr, user_level=user_level)
             usersave.save()
         return redirect('main:index')
 
@@ -62,19 +62,21 @@ def login(request):
     loginform = LoginForm()
     context = {'forms' : loginform }
     if request.method == 'GET':
+        print("들어감감?")
         return render(request, 'user/login.html', context)
     elif request.method == 'POST':
         loginform = LoginForm(request.POST)
         if loginform.is_valid():
             request.session['login_session'] = loginform.login_session
             request.session.set_expiry(0)
-
+            
             return redirect('main:index')
         else:
             context['forms'] = loginform
             if loginform.errors:
                 for value in loginform.errors.values():
                     context['error'] = value
+                    print("들어감?")
 
         
         return render(request, 'user/login.html', context)

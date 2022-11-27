@@ -18,10 +18,8 @@ class User(models.Model):
     user_addr = models.CharField(max_length=40, verbose_name='유저 주소')
     user_level =models.CharField(max_length=8 ,verbose_name="등급")
 
-
-
     def __str__(self): #2
-        return self.user_name
+        return self.username
     
     class Meta: #3
         db_table = 'TB_USER'
@@ -42,3 +40,6 @@ class secinquiry(models.Model):
     inquirys_name = models.CharField(max_length=20)
     inquirys_email = models.CharField(max_length=30)
     inquirys_text = models.TextField(max_length=500)
+
+    class Meta: #3
+        db_table = 'TB_inquiry'
