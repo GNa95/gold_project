@@ -5,7 +5,6 @@
     <div class="container my-3 mt-5" style="width:65vmin">
         <form method="post" action="{% url 'user:signup' %}">
             {% csrf_token %}
-            {% include "form_errors.html" %}
             <div class="mb-4">
                 <label for="user_id" class="col-md-4 text-right">사용자 ID<span style="color:red;"> * </span>:</label>
                 <div class="col-md-7 gold-106">

@@ -22,5 +22,5 @@ def martSearch(request):
     ent_list.append(ent['fields'])
   entJson = json.dumps(ent_list, ensure_ascii=False)
   login_session = request.session.get('login_session', '')
-  return render(request, 'mart/search.html',{"ent_list":entJson,"login_session" : login_session})
+  return render(request, 'mart/search.html',{"ent_list":entJson, "login_session":login_session})
   
