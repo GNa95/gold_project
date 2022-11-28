@@ -11878,6 +11878,24 @@ a{
   padding-left: 20rem !important;
 }
 
+.gold-10 {
+  font-size: 2rem !important;
+}
+
+.gold-11 {
+  position: relative;
+  padding: 0.1rem 0.1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.gold-12 {
+  table-layout: fixed;
+  margin-top: 2rem !important;
+}
+
+
 /* main css */
 .gold-51 {
   padding: 20px /* 임시 */

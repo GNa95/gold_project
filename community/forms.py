@@ -1,21 +1,23 @@
 from django import forms
-from .models import  Reply
+from .models import  MainBoard, Reply
 
-class WriteForm(forms.Form):
-    title = forms.CharField(
-        error_messages={'required': '제목을 입력하세요'},
-        max_length=64,
-        label='제목')
-    content = forms.CharField(
-        error_messages={'required': '내용을 입력하세요'},
-        widget=forms.Textarea,
-        label='내용')
-    # tags = forms.CharField(required=False, label='태그')
+class WriteForm(forms.ModelForm):
+    class Meta:
+        model = MainBoard
+        fields = ['title', 'content', 'area']
+        labels = {'title': '제목', 'content': '내용', 'area': '지역'}
 
 class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['reply']
         labels = {'reply': '댓글 내용'}
+
+        
+# class SearchForm(forms.ModelForm):
+#     class Meta:
+#         model = Search
+#         fields = ['keyword']
+#         labels = {'keyword': '검색키워드'}
 
 
