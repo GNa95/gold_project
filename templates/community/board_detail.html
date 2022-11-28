@@ -15,8 +15,8 @@
                     {% block comments %}
                     {% for comment in comment_view %}
                     
-                    {% comment %} <p>{{ comment.author }}</p> {% endcomment %}
-                    <p>작성자</p>
+                    <p>{{ comment.author }}</p>
+                    {% comment %} <p>작성자</p> {% endcomment %}
                     <p>{{ comment.reply }}</p>   
                     <p class="text-end fs-6">{{ comment.created_dt }}</p>
                     <hr>

@@ -1,5 +1,6 @@
 from django.db import models
-# from user.models import User
+from user.models import User
+
 
 '''게시글(MainBoard) 모델'''
 
@@ -14,7 +15,7 @@ class MainBoard(models.Model):
     area = models.CharField(max_length=8, choices=AREA_CHOICES, default='20122000')
     title = models.CharField(max_length=200, blank=False)
     content = models.TextField(max_length=1000, blank=False)
-    # writer = models.ForeignKey('user.User', on_delete=models.CASCADE)
+    writer = models.CharField(max_length=50)
     created_dt = models.DateTimeField(auto_now_add=True, blank=False)
 
     def __str__(self):
@@ -30,7 +31,7 @@ class MainBoard(models.Model):
 
 class Reply(models.Model):
     reply = models.TextField()
-    # author = models.ForeignKey('user.User', on_delete=models.CASCADE)
+    author = models.CharField(max_length=50)
     board = models.ForeignKey('MainBoard', on_delete=models.CASCADE)
     created_dt = models.DateTimeField(auto_now_add=True)
     def __str__(self):
