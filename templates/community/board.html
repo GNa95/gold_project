@@ -53,8 +53,8 @@
                                 </td>
 
                                 <td class="action">{{ board.get_area_display }}</td>
-
-                                <td class="name"></td>
+                                
+                                <td class="name">{{ board.writer }}</td>
                                 <td class="text-start">
                                     <a href="{% url 'community:board_detail' board.id %}">
                                         {{ board.title }} 
