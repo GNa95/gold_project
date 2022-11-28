@@ -4,20 +4,21 @@
 <!-- Mashead header-->
 <section class="py-10 bg-white">
     <div class="container px-5 px-lg-5 my-5 mt-10">
-        <h5>커뮤니티</h5>
+        <h3>커뮤니티</h3>
         <div class="row">
             <div class="col-sm-6">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-danger" data-toggle="dropdown">지역선택
-                        <select class="form-select form-select-sm" id="area_filter">
-			                {% for list in all_area %}
-                                {% if list.ent_area_cd == area_text %}
-                                    <option value="{{ list.ent_area_cd }}" selected>{{ list.ent_area_nm }}123456789</option>
-                                {% else %}
-                                    <option value="{{ list.ent_area_cd }}">{{ list.ent_area_nm }}</option>
-                                {% endif %}
-			                {% endfor %}
-	                    </select>
+                    <button class="btn btn-danger">
+                        지역선택&nbsp;&nbsp;
+                            <select class="form-select-sm " id="area_filter">
+                                {% for list in all_area %}
+                                    {% if list.ent_area_cd == area_text %}
+                                        <option value="{{ list.ent_area_cd }}" selected>{{ list.ent_area_nm }}</option>
+                                    {% else %}
+                                        <option value="{{ list.ent_area_cd }}">{{ list.ent_area_nm }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select> 
                     </button>
                 </div>
             </div>
@@ -32,18 +33,17 @@
 
         </div>
 
-        <div class="table-responsive pt-3">
-            <table class="table">
+        <div>
+            <table class="table gold-12 ">
                 <tbody>
                     <tr>
                         <th>번호</th>
                         <th>지역</th>
-                        <th class="name">작성자</th>
-                        <th class="subject">제목</th>
-                        <th class="time">작성일시</th>
+                        <th>작성자</th>
+                        <th>제목</th>
+                        <th>작성일시</th>
                     </tr>
                     </tr>
-
                     {% if board_list %}
                     {% for board in board_list %}
 
@@ -57,20 +57,20 @@
                                 <td class="name"></td>
                                 <td class="text-start">
                                     <a href="{% url 'community:board_detail' board.id %}">
-                                        {{ board.title }}
-                                    </a>
-                                    {% if board.answer_set.count > 0 %}
-                                    <span class="text-danger small ml-2">
-                                        {{ board.answer_set.count }}
-                                    </span>
-                                    {% endif %}
-
+                                        {{ board.title }} 
+                                            <span class=" small ml-2"> 
+                                                {% if board.reply_set.count > 0 %}
+                                                    ( {{ board.reply_set.count }} )
+                                               {% endif %}
+                                            </span>
+                                    </a>  
                                 </td>
-                                <td>{{ board.created_dt }}</td>
+                                <td class="fs-6">{{ board.created_dt }}</td>
                             </tr>
 
                     {% endfor %}
                     {% else %}
+                    
                     <tr>
                         <td colspan="3">등록된 게시글이 없습니다.</td>
                     </tr>
@@ -158,7 +158,7 @@ area_filter.addEventListener('change', function() {
     document.getElementById('kw').value = '';
     document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
     document.getElementById('area').value = document.getElementById('area_filter').value;
-    document.getElementById('searchForm').submit();
+    document.getElementById('searchForm').submit(); 
 });
 
 </script>
