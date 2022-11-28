@@ -32,3 +32,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+$('a').click(function(event){
+    event.preventDefault(); 
+  });

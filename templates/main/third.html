@@ -61,29 +61,61 @@
                 {{ list.add }}
             {% endfor %}
         </div>
-
     </div>
 </div>
+
 <!---->
 <div class="gold-53 gold-52">
     <div class="gold_54">
         <div id="map" style="width:100%;height:100%;">
             <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4abb92669ec489cbf6342ed57e21e571"></script>
             <script>
-                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
                     mapOption = { 
-                        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                         // draggable: false, // 지도를 생성할때 지도 이동 및 확대/축소를 막으려면 draggable: false 옵션을 추가하세요
-                        level: 3 // 지도의 확대 레벨
+                        center: new kakao.maps.LatLng(37.5923,127.016), // 지도의 중심좌표
+                        level: 1 // 지도의 확대 레벨
                     };
                 
                 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
                 
+                //지도 확대 금지
                 map.setZoomable(false)
+
+                {% comment %} var positions = [
+                {
+                    title: '롯데슈퍼동소문점',
+                    latlng: new kakao.maps.LatLng(37.5923,127.016)
+                }
+                ]; {% endcomment %}
+
+                var positions = "{{map}}".replace(/&#x27;/g, "\"");
+
+                console.log(positions);
+
+                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+
+                for (var i = 0; i < positions.length; i ++) {
+                    
+                    // 마커 이미지의 이미지 크기 입니다
+                    var imageSize = new kakao.maps.Size(24, 35); 
+                    
+                    // 마커 이미지를 생성합니다    
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+
+                    // 마커를 생성합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map, // 마커를 표시할 지도
+                        title: positions[i].title,
+                        position: new kakao.maps.LatLng(positions[i].latlng), // 마커를 표시할 위치
+                        image : markerImage // 마커 이미지 
+                    });
+                }
+                
                 
             </script>
         </div>
     </div>
 </div>
+
 </body>
 {% endblock %}
