@@ -38,12 +38,14 @@
                         <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'mart:martSearch' %}">마트검색</a></li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
+                        
                         {% if login_session %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'user:history_search' %}">test{{ user.username }}님</a></li>
-                            <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'user:logout' %}">(로그아웃)</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'user:history_search' %}">{{ login_session }}님</a></li>
+                            <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'user:logout' %}">(로그아웃)</a></li>    
                         {% else %}
                             <li class="nav-item"><a class="nav-link me-lg-3" href="{% url 'user:login' %}">로그인</a></li>
                         {% endif %}
+                            
                     </ul>
                     <button class="btn btn-outline-danger rounded-pill px-3 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                         <span class="d-flex align-items-center">
@@ -60,7 +62,7 @@
         {% endblock %}
         <!--기본 템플릿 안에 삽입될 내용 End -->
         <!-- Footer-->
-        <footer class="bg-black text-center py-5">
+        <footer class="bg-black text-center py-1">
             <div class="container px-5">
                 <div class="text-white-50 small">
                     <div class="mb-2">&copy; Your Website 2022. All Rights Reserved.</div>

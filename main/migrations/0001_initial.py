@@ -267,7 +267,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ThSearch',
             fields=[
-                ('ht_num', models.AutoField(db_column='HT_NUM', primary_key=True, serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=30)),
                 ('recipe_nm', models.CharField(db_column='RECIPE_NM', max_length=50)),
                 ('irdnt_nm', models.CharField(db_column='IRDNT_NM', max_length=50)),
@@ -276,20 +276,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'th_search',
-                'managed': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='UserSecinquiry',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('inquirys_name', models.CharField(max_length=20)),
-                ('inquirys_email', models.CharField(max_length=30)),
-                ('inquirys_text', models.TextField()),
-            ],
-            options={
-                'db_table': 'user_secinquiry',
-                'managed': False,
             },
         ),
     ]
