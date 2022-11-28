@@ -81,16 +81,16 @@
                 //지도 확대 금지
                 map.setZoomable(false)
 
-                {% comment %} var positions = [
+                var positions = [
                 {
                     title: '롯데슈퍼동소문점',
                     latlng: new kakao.maps.LatLng(37.5923,127.016)
                 }
-                ]; {% endcomment %}
+                ];
 
-                var positions = "{{map}}".replace(/&#x27;/g, "\"");
+                {% comment %} var positions = "{{map}}".replace(/&#x27;/g, "\"");
 
-                console.log(positions);
+                console.log(positions); {% endcomment %}
 
                 var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 
