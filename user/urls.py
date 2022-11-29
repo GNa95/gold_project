@@ -16,9 +16,8 @@ urlpatterns = [
 
 
     # mypage
-    path('history_search/',views.history_search, name='history_search'),
-    path('history_sale/',views.history_sale, name='history_sale'),
+    path('mypage/',views.mypage, name='mypage'),
     path('edit/',views.member_edit, name='member_edit'),
     path('upload/',views.sale_upload, name='sale_upload'),
-
+    path('sale_edit/<int:sale_id>/',views.sale_edit, name='sale_edit'),
 ]

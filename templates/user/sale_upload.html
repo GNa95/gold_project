@@ -5,11 +5,11 @@
     <div class="col-lg-2">
       <table  class = "col-md-12">
         <tbody>
-          <tr onclick="location.href='{% url 'user:history_sale' %}'" style="cursor:hand">
+          <tr onclick="location.href='{% url 'user:mypage' %}'" style="cursor:hand;">
             <td class="col-md-3" style="text-align:center;min-width: 40px;"><span class="material-symbols-outlined">history</span></td>
             <td class="col-md-9" style="font-size:11pt;min-width: 130px;">세일 이력</td>
           </tr>
-          <tr onclick="location.href='{% url 'user:member_edit' %}'" style="cursor:hand">
+          <tr onclick="location.href='{% url 'user:member_edit' %}'" style="cursor:hand;">
             <td class="col-md-3"  style="text-align:center;"><span class="material-symbols-outlined">settings</span></td>
             <td class="col-md-9" style="font-size:11pt;">회원 정보 수정</td>
           </tr>
@@ -25,41 +25,41 @@
           </div>
           <!-- End Title -->   
           <div class="container my-3 mt-4" style="width: 100vmin">
-            <form method="post" action="{% url 'user:signup' %}">
+            <form method="post" action="{% url 'user:sale_upload' %}">
               {% csrf_token %}
               <div class="mb-4">
-                <label for="id" class="col-md-2 text-left" ><p>세일 제목 : </p></label>
+                <label for="sale_name" class="col-md-2 text-left" ><p>세일 제목 : </p></label>
                 <div class="col-md-10 gold-106">
                   <input
                     type="text"
                     class="form-control"
-                    name="id"
-                    id="id"
-                    value="{{ form.id.value|default_if_none:'' }}"
-                    style="width:50%;float: left;"
+                    name="sale_name"
+                    id="sale_name"
+                    value="{{ form.sale_name.value|default_if_none:'' }}"
+                    style="width:50%;float:left;"
                   />
                 </div>
               </div>
               <div class="mb-4">
-                <label for="birth" class="col-md-2 text-left"
+                <label for="sale_date" class="col-md-2 text-left"
                   ><p>세일 기간 : </p></label
                 >
                 <div class="col-md-10 gold-106">
                   <input
                     type="date"
                     class="form-control"
-                    name="birth"
-                    id="birth"
-                    value="{{ form.birth.value|default_if_none:'' }}"
+                    name="start_date"
+                    id="start_date"
+                    value="{{ form.start_date.value|default_if_none:'' }}"
                     style="width:24%;float: left;"
                   />
                   <span style="float:left;"> ~ </span>
                   <input
                     type="date"
                     class="form-control"
-                    name="birth"
-                    id="birth"
-                    value="{{ form.birth.value|default_if_none:'' }}"
+                    name="end_date"
+                    id="end_date"
+                    value="{{ form.end_date.value|default_if_none:'' }}"
                     style="width:24%;float: left;"
                   />
                 </div>
@@ -74,7 +74,7 @@
                 상품추가
               </button>
               </div>
-              <div class="mb-4" style="width:100%;overflow:auto;">
+              <div class="mb-4" style="width:100%;height:calc(30vh - 20px);overflow:auto;">
                 <table class="table top-selling-table">
                   <thead>
                     <tr>
@@ -89,7 +89,7 @@
                     <tr>
                       <td>1</td>
                       <td>
-                        <input type="text" name="gd_type_nm" list="gd_type_nm" size="10" style="width:100%; border:0;">
+                        <input type="text" id="gd_type" name="gd_type1" list="gd_type_nm" size="10" style="width:100%; border:0;">
                         <datalist id="gd_type_nm" name="gd_type_nm">
                           {% for gd_type in gd_type_cd %}
                             <option value="{{  gd_type.gd_type_2 }}" />
@@ -97,10 +97,10 @@
                         </datalist>
                       </td>
                       <td>
-                        <input type="text" name="gd_nm" style="width:100%; border:0;">
+                        <input type="text" id="sale_gds" name="sale_gds1" style="width:100%; border:0;">
                       </td>
                       <td>
-                        <input type="text" name="gd_price" style="width:100%; border:0;">
+                        <input type="text" id="sale_price" name="sale_price1" style="width:100%; border:0;">
                       </td>
                       <td>
                         <span class="material-symbols-outlined gold-105" style="text-align:center;" onclick="delete_row(this); autoNumbering();">delete</span>
@@ -109,12 +109,17 @@
                   </tbody>
                 </table>
               </div>
+              <input
+                    type="hidden"
+                    name="table_count"
+                    id="table_count"
+                    value=1
+                  />
               <div class="mb-4" style="text-align:center;">
                 <button
-                type="button"
+                type="submit"
                 class="btn btn-danger"
                 style="font-size: 0.8rem;"
-                onclick="location.href='{% url 'user:sale_upload' %}'"
               >
                 등록하기
               </button>
@@ -131,13 +136,14 @@
 {% block script %}
 <script>
   var my_tbody = document.getElementById('my-tbody');
-
+  var table_count = document.getElementById("table_count");
   function add_row() {
     var row = my_tbody.insertRow(); 
-    row.insertCell(0).innerHTML=""
+    row.insertCell(0).innerHTML="";
     //구분
+    var count = parseInt(table_count.value) + 1;
     var typeNm = row.insertCell(1);
-    content = "<input type='text' name='gd_type_nm' list='gd_type_nm' size='10' style='width:100%; border:0;'>";
+    content = "<input type='text' id='gd_type' name='gd_type"+count+"' list='gd_type_nm' size='10' style='width:100%; border:0;'>";
     content += "<datalist id='gd_type_nm' name='gd_type_nm'>"
                + "{% for gd_type in gd_type_cd %}"
                + " <option value='{{  gd_type.gd_type_2 }}' /> "
@@ -147,21 +153,23 @@
     
     //상품이름
     var gdNm = row.insertCell(2);
-    gdNm.innerHTML = "<input type='text' name='gd_nm' size='10' style='width:100%; border:0;'>";
+    gdNm.innerHTML = "<input type='text' id='sale_gds' name='sale_gds"+count+"' size='10' style='width:100%; border:0;'>";
     //가격
     var gdPrice = row.insertCell(3);
-    gdPrice.innerHTML = "<input type='text' name='gd_price' size='10' style='width:100%; border:0;'>";
+    gdPrice.innerHTML = "<input type='text' id='sale_price' name='sale_price"+count+"' size='10' style='width:100%; border:0;'>";
     //삭제
     var typeNm = row.insertCell(4);
     typeNm.innerHTML = "<span class='material-symbols-outlined gold-105' style='text-align:center;' onclick='delete_row(this); autoNumbering();'>delete</span>";
 
-    
+    document.getElementById("table_count").value=count;
   }
+  
   function delete_row(obj) {
     if(my_tbody.rows.length<2) return;
     var tr = $(obj).parent().parent();
     tr.remove();
   }
+ 
   
   function autoNumbering(startnum){
     for(var i =0; i<my_tbody.rows.length; i++){

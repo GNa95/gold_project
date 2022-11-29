@@ -49,50 +49,41 @@
               </button>
             </div>
           </div>
-          <div>
-            <div class="select-style-1">
-              <div class="select-position select-sm">
-                <select class="light-bg">
-                  <option value="day">오늘</option>
-                  <option value="month">이번달</option>
-                </select>
-              </div>
-            </div>
-            <!-- end select -->
-          </div>
         </div>
         <!-- End Title -->
-        <div class="table-responsive">
+        <div class="table-responsive" style="height:calc(55vh - 20px);overflow:auto;">
           <table class="table">
             <thead>
               <tr>
                 <th>세일명</th>
                 <th class="d-sm-table-cell">세일 품목</th>
-                <th class="d-sm-table-cell">세일 품목수</th>
-                <th>날짜</th>
-                <th>삭제</th>
+                <th class="d-sm-table-cell">세일 품목 수</th>
+                <th>세일 기간</th>
               </tr>
             </thead>
             <tbody id="my-tbody">
+              {% if sale_data %}
+              {% for data in sale_data %}
+                <tr onclick="location.href='{% url 'user:sale_edit' data.id %}'" style="cursor: hand">
+                  <td>
+                    <p class="gold-105">{{ data.sale_name }}</p>
+                  </td>
+                  <td>
+                    <p class="gold-105">{{ data.sale_gds }}</p>
+                  </td> 
+                  <td>
+                    <p class="gold-105">{{ data.sale_gds_cnt }}</p>
+                  </td>
+                  <td>
+                    <p class="gold-105">{{ data.sale_date }}</p>
+                  </td>
+                </tr>
+              {% endfor %}
+              {% else %}
               <tr>
-                <td>
-                  <div>
-                    <p>미역국</p>
-                  </div>
-                </td>
-                <td>
-                  <p class="gold-105">미역, 간장 등</p>
-                </td>
-                <td>
-                  <p class="gold-105">34</p>
-                </td>
-                <td>
-                  <p class="gold-105">2022/11/12 ~ 2022/11/20</p>
-                </td>
-                <td>
-                  <span class="material-symbols-outlined gold-105" onclick="delete_row(this)">delete</span>
-                </td>
+                <td colspan="4"><p class="gold-105">세일 이력이 없습니다.</p></td>
               </tr>
+              {% endif %}
             </tbody>
           </table>
           <!-- End Table -->
