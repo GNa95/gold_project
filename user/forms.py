@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, ThSale
 from argon2 import PasswordHasher, exceptions
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
@@ -45,3 +45,9 @@ class LoginForm(forms.Form):
                 return self.add_error('password', '비밀번호가 다릅니다.')
             
             self.login_session = user.user_id
+
+
+class SaleForm(forms.ModelForm):
+    class Meta:
+        model = ThSale
+        fields = ['sale_name','start_date', 'end_date']

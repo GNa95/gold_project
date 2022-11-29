@@ -9,14 +9,18 @@
       <table class="col-md-12">
         <tbody>
           <tr
-            onclick="location.href='{% url 'user:history_sale' %}'"
+            onclick="location.href='{% url 'user:mypage' %}'"
             style="cursor: hand"
           >
             <td class="col-md-3" style="text-align: center; min-width: 40px">
               <span class="material-symbols-outlined">history</span>
             </td>
             <td class="col-md-9" style="font-size: 11pt; min-width: 130px">
-              검색 이력
+              {% if userdata.user_level == '1' %}
+                검색 이력
+              {% else %}
+                세일 이력
+              {% endif %}
             </td>
           </tr>
           <tr>
@@ -37,89 +41,55 @@
           </div>
           <!-- End Title -->
           <div class="container my-3" style="width: 65vmin">
-            <form method="post" action="{% url 'user:signup' %}">
+            <form method="post" action="{% url 'user:member_edit' %}">
               {% csrf_token %}
               <div class="mb-4">
-                <label for="id" class="col-md-4 text-right">사용자 ID<span style="color: red"> * </span>:</label>
+                <label for="id" class="col-md-4 text-right"><span>사용자 ID : </span></label>
                 <div class="col-md-7 gold-106">
                   <input
                     type="text"
                     class="form-control"
                     name="id"
                     id="id"
-                    value="{{ form.id.value|default_if_none:'' }}"
+                    value="{{ userdata.user_id|default_if_none:'' }}"
                     disabled
                   />
                 </div>
               </div>
               <div class="mb-4">
-                <label for="username" class="col-md-4 text-right"
-                  >사용자 이름<span style="color: red"> * </span>:</label
-                >
+                <label for="username" class="col-md-4 text-right"><span> 사용자 이름 : </span></label>
                 <div class="col-md-7 gold-106">
                   <input
                     type="text"
                     class="form-control"
                     name="username"
                     id="username"
-                    value="{{ form.username.value|default_if_none:'' }}"
+                    value="{{ userdata.username|default_if_none:'' }}"
                     disabled
                   />
                 </div>
               </div>
               <div class="mb-4">
-                <label for="password1" class="col-md-4 text-right"
-                  >비밀번호<span style="color: red"> * </span>:</label
-                >
-                <div class="col-md-7 gold-106">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="password1"
-                    id="password1"
-                    value="{{ form.password1.value|default_if_none:'' }}"
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <label for="password2" class="col-md-4 text-right"
-                  >비밀번호 확인<span style="color: red"> * </span>:</label
-                >
-                <div class="col-md-7 gold-106">
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="password2"
-                    id="password2"
-                    value="{{ form.password2.value|default_if_none:'' }}"
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <label for="phone" class="col-md-4 text-right"
-                  >전화번호<span style="color: red"> * </span>:</label
-                >
+                <label for="phone" class="col-md-4 text-right"><span> 전화번호 : </span></label>
                 <div class="col-md-7 gold-106">
                   <input
                     type="text"
                     class="form-control"
                     name="phone"
                     id="phone"
-                    value="{{ form.phone.value|default_if_none:'' }}"
+                    value="{{ userdata.user_phone|default_if_none:'' }}"
                   />
                 </div>
               </div>
               <div class="mb-4">
-                <label for="addr" class="col-md-4 text-right"
-                  >주소<span style="color: red"> * </span>:</label
-                >
+                <label for="addr" class="col-md-4 text-right"><span> 주소 :  </span></label>
                 <div class="col-md-7 gold-106">
                   <input
                     type="text"
                     class="form-control"
                     name="addr"
                     id="addr"
-                    value="{{ form.addr.value|default_if_none:'' }}"
+                    value="{{ userdata.user_addr|default_if_none:'' }}"
                   />
                 </div>
               </div>
