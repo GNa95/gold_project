@@ -4,7 +4,7 @@
 {% block content %}
 <section class="py-10 bg-white">
     <div class="container my-3 mt-5" style="width:65vmin">
-        <form method="post" action="{% url 'user:corpsignup' %}">
+        <form method="post" action="{% url 'user:signup' %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="user_id" class="col-md-4 text-right">사용자 ID<span style="color:red;"> * </span>:</label>

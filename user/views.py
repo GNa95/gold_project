@@ -9,10 +9,10 @@ from main.models import TbGdCd
 
 # Create your views here.
 
-#개인 회원가입
+#개인&회사 회원가입
 def signup(request):
     if request.method == 'GET':
-        return render(request, 'user/signup.html')
+        return render(request, 'user/signup.html')   
     elif request.method =='POST':
         user_name = request.POST.get('user_id','')
         user_id = request.POST.get('username','')
@@ -31,7 +31,7 @@ def signup(request):
             usersave.save()
         return redirect('main:index')
 
-#회사 회원가입
+# #회사 회원가입
 def corpsignup(request):
     if request.method == 'GET':
         return render(request, 'user/corpsignup.html')
@@ -62,7 +62,6 @@ def login(request):
     loginform = LoginForm()
     context = {'forms' : loginform }
     if request.method == 'GET':
-        print("들어감감?")
         return render(request, 'user/login.html', context)
     elif request.method == 'POST':
         loginform = LoginForm(request.POST)
@@ -76,8 +75,6 @@ def login(request):
             if loginform.errors:
                 for value in loginform.errors.values():
                     context['error'] = value
-                    print("들어감?")
-
         
         return render(request, 'user/login.html', context)
 
