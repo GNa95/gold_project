@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
-from .forms import LoginForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import LoginForm, SaleForm
 from django.contrib.auth import login, authenticate
 from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
 from main.models import TbGdCd
+from django.db import connection
 
 # Create your views here.
 
@@ -99,18 +100,77 @@ def inquirys(request):
 
 
 # mypage
-def history_search(request):
-    return render(request, 'user/history_search.html', {})
-
-def history_sale(request):
-    return render(request, 'user/history_sale.html', {})
-
+def mypage(request):
+    login_session = request.session.get('login_session', '')
+    userdata = User.objects.get(user_id = login_session)
+    if userdata.user_level == '1':
+        return render(request, 'user/history_search.html', {"login_session":login_session})
+    else:
+        cursor = connection.cursor()
+        sql = "select id, sale_name," + \
+              "(select concat(group_concat(gd_type_nm SEPARATOR ', '),' 등') from (select gd_type_nm from th_saled b where a.id = b.sale_id LIMIT 3) c) as 'sale_gds'," + \
+              "(select count(*) from th_saled b where a.id = b.sale_id) as 'sale_gds_cnt'," + \
+              "concat(date_format(start_date,'%Y/%m/%d'), ' ~ ', date_format(end_date,'%Y/%m/%d')) as 'sale_date'" + \
+              "from th_sale a where user='" + login_session + "' order by end_date desc, start_date desc;"
+        cursor.execute(sql)
+        # result = cursor.fetchall()
+        result = dictfetchall(cursor)
+        cursor.close()
+        return render(request, 'user/history_sale.html', {"sale_data":result, "login_session":login_session})
 
 def member_edit(request):
-    return render(request, 'user/member_edit.html', {})
+    login_session = request.session.get('login_session', '')
+    userdata = User.objects.get(user_id = login_session)
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        addr = request.POST.get('addr')
+        if phone:
+            userdata.user_phone = phone 
+        if addr:
+            userdata.user_addr = addr
+        userdata.save()
+        return render(request, 'user/member_save.html', {"login_session":login_session})
+    
+    return render(request, 'user/member_edit.html', {"userdata":userdata, "login_session":login_session})
 
 def sale_upload(request):
+    login_session = request.session.get('login_session', '')
+    if request.method == 'POST':
+        form = SaleForm(request.POST)
+        if form.is_valid():
+            sale = form.save(commit=False)
+            sale.user = login_session
+            sale.save()
+        count = request.POST.get('table_count')
+        for i in range(1,int(count)+1):
+            try:
+                num = str(i)
+                gd_type_nm = request.POST.get('gd_type'+num)
+                sale_gds = request.POST.get('sale_gds'+num)
+                sale_price = request.POST.get('sale_price'+num)
+                sale_detail = ThSaleDetail(sale=sale, gd_type_nm=gd_type_nm, sale_gds=sale_gds , sale_price=sale_price)
+                sale_detail.save()
+            except:
+                pass
+        return redirect('user:mypage')
     gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
-    return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd})
+    return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd, "login_session":login_session})
+
+def sale_edit(request, sale_id):
+    login_session = request.session.get('login_session', '')
+    sale = get_object_or_404(ThSale, pk=sale_id)
+    saled = ThSaleDetail.objects.filter(sale=sale)
+    return render(request, 'user/sale_edit.html', {"sale":sale,"saled":saled,"login_session":login_session})
 
 
+
+
+
+
+
+def dictfetchall(cursor):
+  columns = [col[0] for col in cursor.description]
+  return [
+    dict(zip(columns, row))
+    for row in cursor.fetchall()
+  ]

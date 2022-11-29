@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 #from django.contrib.auth.models import AbstractUser
 
 # from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -28,14 +29,8 @@ class User(models.Model):
     
     
 
-#일반 사용자 생성
 
-
-
-
-
-
-
+# 문의하기 Table
 class secinquiry(models.Model):
     inquirys_name = models.CharField(max_length=20)
     inquirys_email = models.CharField(max_length=30)
@@ -43,3 +38,27 @@ class secinquiry(models.Model):
 
     class Meta: #3
         db_table = 'TB_inquiry'
+
+
+# sale이력 Table
+class ThSale(models.Model):
+    sale_name = models.CharField(max_length=20)
+    user = models.CharField(max_length=20)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.sale_name
+
+    class Meta: #3
+        db_table = 'TH_SALE'
+
+class ThSaleDetail(models.Model):
+    sale = models.ForeignKey('ThSale', on_delete=models.CASCADE)
+    gd_type_nm = models.CharField(max_length=20)
+    sale_gds = models.CharField(max_length=20)
+    sale_price = models.IntegerField()
+
+    class Meta:
+        db_table = 'TH_SALED'
+        

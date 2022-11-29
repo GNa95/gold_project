@@ -1,0 +1,116 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0" />
+<section class=" gold-102 px-5 bg-white">
+  <div class="container gold-101 my-3 mt-5" style="display: flex; flex-wrap: wrap; ">
+    <div class="col-lg-2">
+      <table  class = "col-md-12">
+        <tbody>
+          <tr onclick="location.href='{% url 'user:mypage' %}'" style="cursor:hand;">
+            <td class="col-md-3" style="text-align:center;min-width: 40px;"><span class="material-symbols-outlined">history</span></td>
+            <td class="col-md-9" style="font-size:11pt;min-width: 130px;">세일 이력</td>
+          </tr>
+          <tr onclick="location.href='{% url 'user:member_edit' %}'" style="cursor:hand;">
+            <td class="col-md-3"  style="text-align:center;"><span class="material-symbols-outlined">settings</span></td>
+            <td class="col-md-9" style="font-size:11pt;">회원 정보 수정</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- End Col -->
+    <div class="col-lg-10">
+      <div class="card-style">
+        <div>
+          <div class="py-2 gold-104">
+            <h4>세일 상세 보기</h4>
+          </div>
+          <!-- End Title -->   
+          <div class="container my-3 mt-4" style="width: 100vmin">
+            <div class="mb-4">
+              <label for="sale_name" class="col-md-2 text-left" ><p>세일 제목 : </p></label>
+              <div class="col-md-10 gold-106">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="sale_name"
+                  id="sale_name"
+                  value="{{ sale.sale_name }}"
+                  style="width:50%;float:left;"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label for="sale_date" class="col-md-2 text-left"
+                ><p>세일 기간 : </p></label
+              >
+              <div class="col-md-10 gold-106">
+                <input
+                  type="date"
+                  class="form-control"
+                  name="start_date"
+                  id="start_date"
+                  value="{{ sale.start_date|date:"Y-m-d" }}"
+                  style="width:24%;float: left;"
+                  disabled
+                />
+                <span style="float:left;"> ~ </span>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="end_date"
+                  id="end_date"
+                  value="{{ sale.end_date|date:"Y-m-d" }}"
+                  style="width:24%;float: left;"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="mb-4" style="width:100%;height:calc(30vh - 20px);overflow:auto;">
+              <table class="table top-selling-table">
+                <thead>
+                  <tr>
+                    <th >No</th>
+                    <th >구분</th>
+                    <th>상품이름</th>
+                    <th>가격</th>
+                  </tr>
+                </thead>
+                <tbody id ="my-tbody">
+                  {% for list in saled %}
+                  <tr>
+                    <td>1</td>
+                    <td>{{ list.gd_type_nm }}</td>
+                    <td>{{ list.sale_gds }}</td>
+                    <td>{{ list.sale_price }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="mb-4" style="text-align:center;">
+              <button
+              type="button"
+              class="btn btn-danger"
+              >
+                <a href="{% url 'user:mypage' %}" class="text-white">뒤로가기</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Col -->
+  </div>
+</section>
+{% endblock %}
+{% block script %}
+<script>
+  var my_tbody = document.getElementById('my-tbody');
+  autoNumbering()
+  function autoNumbering(startnum){
+    for(var i =0; i<my_tbody.rows.length; i++){
+      my_tbody.rows[i].cells[0].innerHTML = "<label for='imanager_ipaddr_label'>"+(i+1)+"</label>";
+    }
+  }
+</script>
+{% endblock%}
