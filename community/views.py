@@ -13,6 +13,7 @@ from user.decorators import login_required
 #Create your views here.
 
 '''게시판 목록 출력 기능'''
+@login_required
 def board_list(request):
   all_area = TbEntArea.objects.all()                            #지역 선택
   area_text = request.GET.get('area', '20100000')
@@ -33,7 +34,8 @@ def board_list(request):
   page_obj = paginator.get_page(page)
 
   area_text = int(area_text)
-  context = {'board_list': page_obj, 'page': page, 'kw': kw, 'area_text': area_text, 'all_area': all_area}
+  login_session = request.session.get('login_session', '')
+  context = {'board_list': page_obj, 'page': page, 'kw': kw, 'area_text': area_text, 'all_area': all_area, 'login_session': login_session}
   return render(request, 'community/board.html', context)  
 
 
