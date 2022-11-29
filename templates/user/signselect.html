@@ -2,9 +2,22 @@
 {% load static %}
 {% block content %}
 <section class="py-10 bg-white">
-    <form method="post" class="post-form" action="{% url 'user:signselect' %}">
+    <form method="post" class="post-form" action="signup.html">
     <div class="container px-5 mt-5"  style="width:65vmin">
-        <a href="{% url 'user:signup' %}"><img src="{% static '/assets/img/11.png' %}" style="width:350px; height:250px"></a>
-        <a href="{% url 'user:corpsignup' %}"><img src="{% static '/assets/img/ddang.jpg' %}" style="width:350px; height:250px"></a>
+        <div style="text-align: center; margin-top: 90px">
+            <h1>회원 가입</h1>
+        </div>
+        <a href="{% url 'user:signup' %}">
+            
+            <div class="gold-108 gold-110 gold-109" >일반 사용자</div>
+
+        </a>
+        <a href="{% url 'user:corpsignup' %}">
+            
+            <div class="gold-108 gold-112 gold-111" >회사&사업자</div>
+
+        </a>
+        
+        <div class="clear"></div>
 </section>
 {% endblock %}

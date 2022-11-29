@@ -11941,6 +11941,46 @@ a{
   float: right;
 }
 
+.clear {
+  clear: both;
+}
+
+.gold-108 {
+  display: block;
+  position: relative;
+  float: left;
+  width: 400px;
+  height: 150px;
+  padding: 0;
+  margin: 50px 20px 10px 0;
+  font-weight: 1000;
+  font-size: 40px;
+  text-align: center;
+  line-height: 150px;
+  border-radius: 10px;
+  transition: all 0.2s ;
+}
+.gold-109 {
+  color: #000000;
+  box-shadow: 0px 0px 0px 3px #ff954e;
+  background: #ffffff;
+}
+.gold-110.gold-109:hover {
+
+  color: #FFFFFF;
+  background: #ff954e;
+}
+.gold-111 {
+  color: #000000;
+  box-shadow: 0px 0px 0px 3px #ff5e5b;
+  background: #ffffff;
+}
+.gold-112.gold-111:hover {
+  color: #FFFFFF;
+  background: #ff5e5b;
+}
+
+
 /* mart css */
 .gold-151 {
   padding: 20px /* 임시 */
