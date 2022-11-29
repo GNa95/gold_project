@@ -11952,13 +11952,14 @@ a{
   width: 400px;
   height: 150px;
   padding: 0;
-  margin: 50px 20px 10px 0;
+  margin: 50px 10px 10px 68px;
   font-weight: 1000;
-  font-size: 40px;
+  font-size: 30px;
   text-align: center;
   line-height: 150px;
-  border-radius: 10px;
+  border-radius: 20px;
   transition: all 0.2s ;
+  
 }
 .gold-109 {
   color: #000000;
