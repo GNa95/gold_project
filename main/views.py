@@ -1,7 +1,5 @@
 from django.shortcuts import render
-from main.models import TbRecipe,TbIrdent,TbGds,TbEnt
 from django.db import connection
-from pandas import DataFrame
 import pandas as pd
 import json
 # Create your views here.
@@ -28,13 +26,15 @@ def second(request):
   return render(request, 'main/second.html',{"irdent":irdent})
 
 def third(request):
+  lon = "126.982732"
+  lat = "37.488236"
   test = "냉면"
   cursor = connection.cursor()
   sqlSum = "select sum(r.recipe_num) from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
   sqlAll = "select tb_recipe.RECIPE_NUM, IRDNT_NM, tb_gds.gd_type_cd, GD_NM, GD_ENT_NM "\
           + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
           + "where RECIPE_NM like '"+ test + "' order by rand();"
-  sqlMap = "select ENT_NM, concat(MAP_X,',', MAP_Y) from (SELECT ENT_NM,ENT_ADDR,MAP_X,MAP_Y FROM golddb.tb_ent) A;"
+  sqlMap = "select ENT_NM, MAP_Y, MAP_X,ENT_PHONE,ENT_ADDR, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
 
   cursor.execute(sqlSum)
   result_sum = cursor.fetchall()
@@ -43,8 +43,6 @@ def third(request):
   cursor.execute(sqlMap)
   result_map = cursor.fetchall()
   connection.close()
-
-  # print(result_map)
 
   sum = []
   for data in result_sum:
@@ -56,17 +54,18 @@ def third(request):
   map = []
   for data in result_map:
     row = {
-      'title': data[0],
-      'latlng': data[1]
+      'ent_nm': data[0],
+      'map_y': data[1],
+      'map_x': data[2],
+      'ent_phone': data[3],
+      'ent_addr': data[4]
     }
     map.append(row)
-  # print(map)
 
   df = pd.DataFrame(result_all,columns=['num','name','type','goods','jejosa'])
   irdent = df.drop_duplicates(['type']).sort_values('type')
   irdent_all = irdent.T.to_dict()
 
-  # mf = pd.DataFrame(result_map,columns=['title','latlng'])
-  # map_addr = mf.T.to_dict()
+  dentJson = json.dumps(map, ensure_ascii=False)
 
-  return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum,"map":map})
+  return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum,"ent_list":dentJson})
