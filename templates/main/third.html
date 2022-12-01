@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<br><br><br><br><br><br>
-<body>
-<div class=" p-1">
-    <div class="col-md-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="border-0 text-uppercase small font-weight-bold">상품이미지</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">재료명</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">상품명</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">제조사</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">마트1</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">마트2</th>
-                    <th class="border-0 text-uppercase small font-weight-bold">마트3</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                        {% for value in irdent_all.values %}
+<!--재료-->
+<section style="padding-top: 8rem;">
+    <div class=" p-1">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="border-0 text-uppercase small font-weight-bold">상품이미지</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">재료명</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">상품명</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">제조사</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">마트1</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">마트2</th>
+                        <th class="border-0 text-uppercase small font-weight-bold">마트3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for value in irdent_all.values %}
+                    <tr>
                         <td><img src="{% static '/images/cham-1.png' %}"></td>
                         <td>{{ value.name }}</td>
                         <td>{{ value.goods }}</td>
@@ -27,17 +27,17 @@
                         <td>{{ value.num }}</td>
                         <td>{{ value.num }}</td>
                         <td>{{ value.num }}</td>
-                </tr>
-                        {% endfor %}
-            </tbody>
-        </table>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<!---->
-<div class="d-flex flex-row-reverse bg-dark text-white p-1">
-    <div class="py-3 px-5 text-right">
+    <!--마트-->
+    <div class="d-flex flex-row-reverse bg-dark text-white p-1">
         
-        <div class="mb-2">마트3</div>
+        <div class="py-3 px-5 text-right"> 
+            <div class="mb-2">마트3</div>
             <div class="h2 font-weight-light">
             {% for list in sum %}
                 {{ list.add }}
@@ -60,62 +60,125 @@
             {% for list in sum %}
                 {{ list.add }}
             {% endfor %}
+            </div>
         </div>
-    </div>
-</div>
 
-<!---->
+    </div>
+</section>
+<!--지도-->
 <div class="gold-53 gold-52">
-    <div class="gold_54">
+    <div class="gold-54">
         <div id="map" style="width:100%;height:100%;">
-            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4abb92669ec489cbf6342ed57e21e571"></script>
-            <script>
-                var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-                    mapOption = { 
-                        center: new kakao.maps.LatLng(37.5923,127.016), // 지도의 중심좌표
-                        level: 1 // 지도의 확대 레벨
-                    };
-                
-                var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-                
-                //지도 확대 금지
-                map.setZoomable(false)
-
-                var positions = [
-                {
-                    title: '롯데슈퍼동소문점',
-                    latlng: new kakao.maps.LatLng(37.5923,127.016)
-                }
-                ];
-
-                {% comment %} var positions = "{{map}}".replace(/&#x27;/g, "\"");
-
-                console.log(positions); {% endcomment %}
-
-                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-
-                for (var i = 0; i < positions.length; i ++) {
-                    
-                    // 마커 이미지의 이미지 크기 입니다
-                    var imageSize = new kakao.maps.Size(24, 35); 
-                    
-                    // 마커 이미지를 생성합니다    
-                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-
-                    // 마커를 생성합니다
-                    var marker = new kakao.maps.Marker({
-                        map: map, // 마커를 표시할 지도
-                        title: positions[i].title,
-                        position: new kakao.maps.LatLng(positions[i].latlng), // 마커를 표시할 위치
-                        image : markerImage // 마커 이미지 
-                    });
-                }
-                
-                
-            </script>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4abb92669ec489cbf6342ed57e21e571"></script>
+<script>
+    // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
+    var placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }),
+        contentNode = document.createElement("div"); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
 
-</body>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+        mapOption = { 
+            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
+        };
+    
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude, // 위도
+                lon = position.coords.longitude; // 경도
+            var locPosition = new kakao.maps.LatLng(lat, lon)
+            displayMarker(locPosition); // 내위치 마커
+            map.setLevel(6);
+        });
+    }
+
+    map.setZoomable(false) //지도 확대 금지
+
+    // 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다
+    contentNode.className = "placeinfo_wrap";
+
+    // 커스텀 오버레이 컨텐츠를 설정합니다
+    placeOverlay.setContent(contentNode);
+
+    var positions = JSON.parse("{{ ent_list|escapejs }}"); // ent_list 배열
+
+    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png', // 마커이미지의 주소입니다    
+        imageSize = new kakao.maps.Size(64, 35), // 마커이미지의 크기입니다
+        imageOption = {
+            spriteSize: new kakao.maps.Size(72, 215), // 스프라이트 이미지의 크기
+            spriteOrigin: new kakao.maps.Point(46, 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new kakao.maps.Point(11, 28), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+    for (var i = 0; i < positions.length; i ++) {
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+            markerPosition = new kakao.maps.LatLng(positions[i].map_x,positions[i].map_y);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            position: markerPosition, //마거 좌표 설정
+            image: markerImage, // 마커이미지 설정
+        });
+
+        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+        (function (marker, position) {
+            kakao.maps.event.addListener(marker, "click", function () {
+                displayPlaceInfo(position);
+            });
+            })(marker, positions[i]);
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+    }
+
+    // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
+    function displayPlaceInfo(position) {
+        // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        var content = '<div class="placeinfo">' +
+            '   <div class="gold-55" onclick="closeOverlay()" title="닫기"></div>' + 
+            '   <a class="title" target="_blank" title="' +
+            position.ent_nm +
+            '">' +
+            position.ent_nm +
+            "</a>"
+        content +=
+            '    <span title="' + position.ent_addr + '">' + position.ent_addr + "</span>";
+
+        content +=
+            '    <span class="tel">' +
+            position.ent_phone +
+            "</span>" +
+            "</div>" +
+            '<div class="after"></div>';
+            
+        contentNode.innerHTML = content;
+        placeOverlay.setPosition(new kakao.maps.LatLng(position.map_x,position.map_y));
+        placeOverlay.setMap(map);
+    }
+
+    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+    function displayMarker(locPosition) {
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: locPosition
+        }); 
+        
+        // 지도 중심좌표를 접속위치로 변경합니다
+        map.setCenter(locPosition);
+    }
+
+    // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+    function closeOverlay() {
+        placeOverlay.setMap(null);
+    }
+</script>
 {% endblock %}
