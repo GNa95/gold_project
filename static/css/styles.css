@@ -11644,15 +11644,12 @@ footer a:hover, footer a:active, footer a:focus {
 
 
 .masthead {
-  background-color: #f8f9fa;
-  padding-top: 9.5rem;
-  padding-bottom: 5rem;
+  padding-top: 10rem;
+  /* padding-bottom: 4.5em; */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  background-image: url("../assets/img/back.png");
-  background-size: cover;
 }
 .masthead .masthead-device-mockup {
   display: flex;
@@ -11660,17 +11657,6 @@ footer a:hover, footer a:active, footer a:focus {
   justify-content: center;
   position: relative;
   
-}
-
-.masthead .masthead-device-background {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-image: url("../assets/img/back1-1.png");
-  background-size: cover;
-  width: 232px;
-  height: 653px;
 }
 
 .masthead .masthead-device-mockup .circle {
@@ -11935,7 +11921,7 @@ a{
 
 /* user css */
 .gold-101 {
-  height: calc(70vh - 20px);
+  height: calc(85vh - 20px);
 }
 .gold-102 {
   padding-top: 6rem !important;
@@ -11958,6 +11944,7 @@ a{
 .clear {
   clear: both;
 }
+
 
 .gold-108 {
   display: block;
@@ -11994,6 +11981,18 @@ a{
   color: #FFFFFF;
   background: #ff5e5b;
 }
+
+.gold-113{
+  background-image: url("../assets/img/back.png");
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-position-y: 100px;
+}
+
+
+
+
+
 
 
 /* mart css */
