@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="py-10 bg-white">
+<section class="py-10 bg-white" style="height: calc(96vh - 19px); width: 100%;">
     <div class="container my-3 mt-5" style="width:65vmin">
         <form method="post" action="{% url 'user:signup' %}">
             {% csrf_token %}

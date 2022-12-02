@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section class="py-10 bg-white">
+<section class="py-10 bg-white" style="height: calc(96vh - 19px); width: 100%; ">
     <form method="post" class="post-form" action="signup.html">
-    <div class="container px-5 mt-5"  style="width:65vmin">
-        <div style="text-align: center; margin-top: 90px">
-            <h3>회원 가입</h3>
+    <div class="container px-5 mt-5"  style="width:100vmin;">
+        <div style="margin-top: 90px; margin-bottom:30px; text-align: center;  ">
+            <h3> 회원 가입 </h3>
         </div>
-        <a href="{% url 'user:signup' %}">
-            
-            <div class="gold-108 gold-110 gold-109" >일반 사용자</div>
+        <div style="margin-bottom:30px;">
+            <a href="{% url 'user:signup' %}" class="gold-107 gold-110 gold-109">
+                일반 사용자
+            </a>
+        </div>
+    
+        <div class="gold-107 gold-112 gold-111" >
+            <a href="{% url 'user:corpsignup' %}" class="gold-107 gold-111 gold-112">    
+                회사&사업자
+            </a>
+        </div>
 
-        </a>
-        <a href="{% url 'user:corpsignup' %}">
-            
-            <div class="gold-108 gold-112 gold-111" >회사&사업자</div>
-
-        </a>
+        
         
         <div class="clear"></div>
 </section>
