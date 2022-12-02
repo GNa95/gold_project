@@ -11945,30 +11945,29 @@ a{
   clear: both;
 }
 
-
-.gold-108 {
+.gold-107 {
   display: block;
   position: relative;
-  float: left;
-  width: 400px;
-  height: 150px;
-  padding: 0;
-  margin: 50px 10px 10px 68px;
-  font-weight: 1000;
-  font-size: 30px;
   text-align: center;
-  line-height: 150px;
+  width: 28rem;
+  height: 9.15rem;
+  padding-top: 0;
+  margin: auto;
+  font-weight: 1000;
+  font-size: 2rem;
+  line-height: 9.15rem;
   border-radius: 20px;
-  transition: all 0.2s ;
+  transition: all 0.3s ;
   
 }
+
 .gold-109 {
   color: #000000;
   box-shadow: 0px 0px 0px 3px #ff954e;
   background: #ffffff;
 }
 .gold-110.gold-109:hover {
-
+  font-size: 2.2rem;
   color: #FFFFFF;
   background: #ff954e;
 }
@@ -11978,6 +11977,7 @@ a{
   background: #ffffff;
 }
 .gold-112.gold-111:hover {
+  font-size: 2.2rem;
   color: #FFFFFF;
   background: #ff5e5b;
 }
