@@ -20,13 +20,13 @@
                 <tbody>
                     {% for value in irdent_all.values %}
                     <tr>
-                        <td><img src="{% static '/images/cham-1.png' %}"></td>
-                        <td>{{ value.name }}</td>
+                        <td><img src="{% get_static_prefix %}images/IMAGE/{{ value.goods }}.jpg"></td>
+                        <td>{{ value.name }}</td> 
                         <td>{{ value.goods }}</td>
                         <td>{{ value.jejosa }}</td>
                         <td>{{ value.num }}</td>
                         <td>{{ value.num }}</td>
-                        <td>{{ value.num }}</td>
+                        <td>{{ value.num }}</td> 
                     </tr>
                     {% endfor %}
                 </tbody>
