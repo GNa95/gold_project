@@ -1,32 +1,98 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <!-- Mashead header-->
-<div class = "gold-113">
-<script src="https://kit.fontawesome.com/4f4953a7c7.js" crossorigin="anonymous"></script>
-    <div class="container px-5">
-        <div class="row gx-5 align-items-center" style="padding-top: 200px; padding-bottom:150px;">
-            <div class="col-lg-6">
-                <!-- Mashead text and app badges-->
-                <div class="mb-5 mb-lg-0 text-center text-lg-start" style="padding-top: 50px;">
-                    <img src="{% static '/assets/img/title.png' %}" style="width: 650px; height:auto; max-width:100%;"><br><br>
-                    
-                </div>
-            </div>
-            <div class="col-lg-6">
-                    <div class="obj">
-                        
-                        <div class="button" id="circlein" style="float:Right; padding-Right:130px">
-                            <div class="words" style="padding-bottom:50px;"></div>
-                            
-                            <i class="fa-solid fa-microphone-lines fa-border fa-5x" ></i>
-                        </div>
-                    </div>
-                    <script src="../../static/js/app.js"></script>    
-            </div>
-            </div>
+<div class="gold-113">
+  <div class="row px-5 py-5" style="height: calc(95vh - 12px); width: 100% float:center;">
+    <div class="row gx-5 align-items-center">
+      <div class="col-lg-6">
+        <!-- Mashead text and app badges-->
+        <div
+          class="mb-5 mb-lg-0 text-center text-lg-start"
+          style="float: right"
+        >
+          <img
+            src="{% static '/assets/img/title.png' %}"
+            style="width: 650px; height: auto; max-width: 100%"
+          />
         </div>
+      </div>
+      <!--이 아래는 음성인식하는 Web STT 부분 입니다.-->
+      <div class="col-lg-6">
+        <div class="obj">
+          <div class="button" id="circlein" style="text-align: center">
+            <div class="words" style="height: 40px"></div>
+            <!--POST방식으로 이름을 stt로 받고 action은 우리가 보내려고하는 세컨드 페이지로 보낸다.-->
+            <form method="post" name="stt" action="{% url 'main:second' %}">
+                <!--타입은 히든으로 안 보여준다.-->
+                <input type="hidden" name="stt" id="stt" class="stt" />
+            </form>
+            <i class="fa-solid fa-microphone-lines fa-border fa-5x"></i>
+          </div>
+        </div>
+      </div>
     </div>
-</div>    
-</header>
+  </div>
+</div>
+{% endblock %} {% block script %}
+
+<script
+  src="https://kit.fontawesome.com/4f4953a7c7.js"
+  crossorigin="anonymous"
+></script>
+<script>
+  window.SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  // 인스턴스 생성
+  const recognition = new SpeechRecognition();
+
+  // true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+  recognition.interimResults = false;
+  // 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+  recognition.lang = "ko-KR";
+  // true means continuous, and false means not continuous (single result each time.)
+  // true면 음성 인식이 안 끝나고 계속 됩니다.
+  recognition.continuous = false;
+  // 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+  // maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+  recognition.maxAlternatives = 10000;
+
+  let p = document.createElement("p");
+  p.classList.add("para");
+
+  let words = document.querySelector(".words");
+  words.appendChild(p);
+
+  let mic = document.querySelector("#circlein");
+
+  let speechToText = "";
+  recognition.addEventListener("result", (e) => {
+    let interimTranscript = "";
+    for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+      let transcript = e.results[i][0].transcript;
+      console.log(transcript);
+      if (e.results[i].isFinal) {
+        speechToText += transcript;
+      } else {
+        interimTranscript += transcript;
+      }
+    }
+    document.querySelector(".para").innerHTML =
+      speechToText + interimTranscript;
+
+    //이 부분은 second페이지로 넘겨주기 위한 'stt' 변수에 사용자가 말한 값을 넣어서 stt를 찾음
+    document.querySelector(".stt").value = speechToText + interimTranscript;
+    //따로 버튼을 누르지 않아도 자동으로 서버에 값이 제출되게 하여 페이지가 넘어갑니다.
+    document.stt.submit()
+  });
+
+  // 음성인식이 끝나면 자동으로 재시작합니다.
+  // recognition.addEventListener("end", recognition.start);
+
+  // 음성 인식 시작
+  mic.addEventListener("click", () => {
+    recognition.start();
+
+    // mic.style.backgroundColor = "#000000"
+  });
+</script>
 {% endblock %}

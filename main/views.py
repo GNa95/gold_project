@@ -2,19 +2,24 @@ from django.shortcuts import render
 from django.db import connection
 import pandas as pd
 import json
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def index(request):
   login_session = request.session.get('login_session', '')
   return render(request, 'main/index.html', {"login_session" : login_session})
-  
+
+@csrf_exempt
 def second(request):
-  test = request.GET.get('test', 'none')
+  #stt변수에 POST방식으로 'stt' 값을 전달 받는다. GET과 POST를 알아야한다.
+  stt = request.POST.get('stt','')
   cursor = connection.cursor()
-  strSql = "select * from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
+  strSql = "select * from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ stt + "';"
   cursor.execute(strSql)
   result = cursor.fetchall()
   connection.close()
+  #이 아래 프린트는 딜레이해결 완료 할떄까지 잠시 대기입니다.
+  print("111", stt)
 
   irdent = []
   for data in result:

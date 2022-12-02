@@ -13,7 +13,6 @@ from user.decorators import login_required
 #Create your views here.
 
 '''게시판 목록 출력 기능'''
-@login_required
 def board_list(request):
   all_area = TbEntArea.objects.all()                            #지역 선택
   area_text = request.GET.get('area', '20100000')

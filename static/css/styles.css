@@ -11985,11 +11985,10 @@ a{
 .gold-113{
   background-image: url("../assets/img/back.png");
   background-repeat: no-repeat;
-  background-size: 60%;
-  background-position-y: 100px;
+  background-size: 65%;
+  background-position:0px 0px;  
+  /* background-position-y: 100px; */
 }
-
-
 
 
 
