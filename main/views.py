@@ -28,7 +28,7 @@ def second(request):
 def third(request):
   lon = "126.982732"
   lat = "37.488236"
-  test = "냉면"
+  test = "두부드레싱과 채소샐러드"
   cursor = connection.cursor()
   sqlSum = "select sum(r.recipe_num) from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
   sqlAll = "select tb_recipe.RECIPE_NUM, IRDNT_NM, tb_gds.gd_type_cd, GD_NM, GD_ENT_NM "\
