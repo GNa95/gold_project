@@ -7,6 +7,7 @@ from argon2 import PasswordHasher
 from .models import *
 from main.models import TbGdCd
 from django.db import connection
+from main.func import dictfetchall
 
 # Create your views here.
 
@@ -153,7 +154,10 @@ def sale_upload(request):
             except:
                 pass
         return redirect('user:mypage')
-    gd_type_cd = TbGdCd.objects.only("gd_type_2").distinct()
+    sql = "select gd_type_2 from tb_gd_cd where gd_type_cd like '%1__';"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    gd_type_cd = dictfetchall(cursor)
     return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd, "login_session":login_session})
 
 def sale_edit(request, sale_id):
@@ -163,14 +167,3 @@ def sale_edit(request, sale_id):
     return render(request, 'user/sale_edit.html', {"sale":sale,"saled":saled,"login_session":login_session})
 
 
-
-
-
-
-
-def dictfetchall(cursor):
-  columns = [col[0] for col in cursor.description]
-  return [
-    dict(zip(columns, row))
-    for row in cursor.fetchall()
-  ]

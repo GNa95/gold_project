@@ -3,6 +3,7 @@ from django.db import connection
 import pandas as pd
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .func import crawl
 # Create your views here.
 
 def index(request):
@@ -35,26 +36,16 @@ def third(request):
   lat = "37.488236"
   test = "냉면"
   cursor = connection.cursor()
-  sqlSum = "select sum(r.recipe_num) from tb_recipe r, tb_irdent i where r.recipe_num = i.recipe_num and r.recipe_nm like '"+ test + "';"
-  sqlAll = "select tb_recipe.RECIPE_NUM, IRDNT_NM, tb_gds.gd_type_cd, GD_NM, GD_ENT_NM "\
+  sqlAll = "select IRDNT_NM, GD_NUM, tb_irdent.GD_TYPE_CD, GD_NM, GD_ENT_NM "\
           + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
           + "where RECIPE_NM like '"+ test + "' order by rand();"
-  sqlMap = "select ENT_NM, MAP_Y, MAP_X,ENT_PHONE,ENT_ADDR, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
+  sqlMap = "select ENT_NUM, ENT_NM, MAP_Y, MAP_X,ENT_PHONE,ENT_ADDR, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
 
-  cursor.execute(sqlSum)
-  result_sum = cursor.fetchall()
   cursor.execute(sqlAll)
   result_all = cursor.fetchall()
   cursor.execute(sqlMap)
   result_map = cursor.fetchall()
   connection.close()
-
-  sum = []
-  for data in result_sum:
-    row = {
-      'add': data[0]
-    }
-    sum.append(row)
 
   map = []
   for data in result_map:
@@ -67,10 +58,27 @@ def third(request):
     }
     map.append(row)
 
-  df = pd.DataFrame(result_all,columns=['num','name','type','goods','jejosa'])
-  irdent = df.drop_duplicates(['type']).sort_values('type')
-  irdent_all = irdent.T.to_dict()
+
+  ent = [i[0] for i in result_map ]
+  
+  df = pd.DataFrame(result_all,columns=['irdnt_nm','gd_num', 'gd_type_cd', 'gd_nm','gd_ent_nm'])
+  irdent = df.drop_duplicates(['gd_type_cd']).sort_values('gd_type_cd')
+  
+  good_col = irdent['gd_num'].values
+  good = good_col.tolist()
+  
+  print("api 동작")
+  cost = crawl(good, ent)
+  print("api 동작완료")
+  
+  df2 = pd.DataFrame(cost).T
+  df2 = df2.reset_index()
+  df2 = df2.rename(columns={'index':'gd_num'})
+
+  merdf = pd.merge(irdent, df2, how='outer').fillna(0)
+  sum = merdf.sum().to_dict()
+  irdent_all = merdf.T.to_dict()
 
   dentJson = json.dumps(map, ensure_ascii=False)
 
-  return render(request, 'main/third.html',{"irdent_all":irdent_all,"sum":sum,"ent_list":dentJson})
+  return render(request, 'main/third.html',{"irdent_all":irdent_all, "ent_list":dentJson, 'ent':ent, 'sum':sum})
