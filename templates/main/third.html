@@ -20,13 +20,13 @@
                 <tbody>
                     {% for value in irdent_all.values %}
                     <tr>
-                        <td><img src="{% get_static_prefix %}images/IMAGE/{{ value.goods }}.jpg"></td>
-                        <td>{{ value.name }}</td> 
-                        <td>{{ value.goods }}</td>
-                        <td>{{ value.jejosa }}</td>
-                        <td>{{ value.num }}</td>
-                        <td>{{ value.num }}</td>
-                        <td>{{ value.num }}</td> 
+                        <td><img src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg"></td>
+                        <td>{{ value.irdnt_nm }}</td>
+                        <td>{{ value.gd_nm }}</td>
+                        <td>{{ value.gd_ent_nm }}</td>
+                        <td>{{ value.mart1 }}</td>
+                        <td>{{ value.mart2 }}</td>
+                        <td>{{ value.mart3 }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -39,27 +39,21 @@
         <div class="py-3 px-5 text-right"> 
             <div class="mb-2">마트3</div>
             <div class="h2 font-weight-light">
-            {% for list in sum %}
-                {{ list.add }}
-            {% endfor %}
+                {{ sum.mart3 }}
             </div>
         </div>
 
         <div class="py-3 px-5 text-right">
             <div class="mb-2">마트2</div>
             <div class="h2 font-weight-light">
-            {% for list in sum %}
-                {{ list.add }}
-            {% endfor %}
+                {{ sum.mart2 }}
             </div>
         </div>
 
         <div class="py-3 px-5 text-right">
             <div class="mb-2">마트1</div>
             <div class="h2 font-weight-light">
-            {% for list in sum %}
-                {{ list.add }}
-            {% endfor %}
+                {{ sum.mart1 }}
             </div>
         </div>
 
