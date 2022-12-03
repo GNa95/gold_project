@@ -5,7 +5,6 @@ from main.models import TbEntArea
 from user.models import User
 from django.utils import timezone
 from .forms import WriteForm, ReplyForm
-
 from django.core.paginator import Paginator
 from django.db.models import Q
 from user.decorators import login_required
