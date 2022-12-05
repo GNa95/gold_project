@@ -51,7 +51,7 @@ def third(request):
   result_map = cursor.fetchall()
   connection.close()
 
-  map = []
+  map_list = []
   for data in result_map:
     row = {
       'ent_num': data[0],
@@ -61,31 +61,33 @@ def third(request):
       'ent_phone': data[4],
       'ent_addr': data[5]
     }
-    map.append(row)
+    map_list.append(row)
 
   ent = [i[0] for i in result_map ]
   
   irdent = request.POST.get("test_value")
+  checked = request.POST.get('good')
   irdent = eval(irdent)
+  checked = checked.split()
 
   df = pd.DataFrame(irdent).T
+  df = df[df["gd_num"].isin(list(map(int,checked)))]
+  
   good_col = df['gd_num']
   good = good_col.tolist()
   
+  print("api 동작")
+  cost = crawl(good, ent)
+  print("api 동작완료")
   
+  df2 = pd.DataFrame(cost).T
+  df2 = df2.reset_index()
+  df2 = df2.rename(columns={'index':'gd_num'})
 
-  # print("api 동작")
-  # cost = crawl(good, ent)
-  # print("api 동작완료")
-  
-  # df2 = pd.DataFrame(cost).T
-  # df2 = df2.reset_index()
-  # df2 = df2.rename(columns={'index':'gd_num'})
+  merdf = pd.merge(df, df2, how='outer').fillna(0)
+  sum_df = merdf.sum().to_dict()
+  irdent_all = merdf.T.to_dict()
 
-  # merdf = pd.merge(df, df2, how='outer').fillna(0)
-  # sum_df = merdf.sum().to_dict()
-  irdent_all = df.T.to_dict()
+  dentJson = json.dumps(map_list, ensure_ascii=False)
 
-  dentJson = json.dumps(map, ensure_ascii=False)
-
-  return render(request, 'main/third.html',{ "ent_list":dentJson, 'ent':ent, 'irdent_all':irdent_all})# 'sum_df':sum_df, 'irdent_all':irdent_all
+  return render(request, 'main/third.html',{ "ent_list":dentJson, 'ent':ent, 'sum_df':sum_df, 'irdent_all':irdent_all})
