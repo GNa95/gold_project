@@ -13,22 +13,32 @@ def index(request):
 @csrf_exempt
 def second(request):
   #stt변수에 POST방식으로 'stt' 값을 전달 받는다. GET과 POST를 알아야한다.
+  login_session = request.session.get('login_session', '')
   stt = request.POST.get('stt','')
+  print("111", stt)  #이 프린트는 딜레이해결 완료 할때까지 잠시 대기입니다.
+  stt_edit = stt.replace(' ',"%")
   cursor = connection.cursor()
-  strSql = "select tb_irdent.GD_TYPE_CD, IRDNT_NM, GD_NM, GD_NUM, GD_ENT_NM "\
-          + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
-          + "where RECIPE_NM like '"+ stt + "' order by rand();"
-  cursor.execute(strSql)
-  result = cursor.fetchall()
-  connection.close()
-  #이 아래 프린트는 딜레이해결 완료 할때까지 잠시 대기입니다.
-  print("111", stt)
-
-  df = pd.DataFrame(result,columns=['gd_type_cd', 'irdnt_nm', 'gd_nm', 'gd_num', 'gd_ent_nm'])
-  irdent = df.drop_duplicates(['gd_type_cd']).sort_values('gd_type_cd')
-  irdent_dict = irdent.T.to_dict()
+  recipeSql = "select recipe_nm from tb_recipe where recipe_nm like '"+ stt_edit + "' limit 1;"
+  cursor.execute(recipeSql)
+  recipeRst = cursor.fetchall()
   
-  return render(request, 'main/second.html',{"irdent_dict":irdent_dict})
+  if recipeRst:
+    recipe_nm = recipeRst[0][0]
+    print(recipe_nm)
+    strSql = "select tb_irdent.GD_TYPE_CD, IRDNT_NM, GD_NM, GD_NUM, GD_ENT_NM "\
+            + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
+            + "where RECIPE_NM like '"+ recipe_nm + "' order by rand();"
+
+    cursor.execute(strSql)
+    result = cursor.fetchall()
+    connection.close()
+    df = pd.DataFrame(result,columns=['gd_type_cd', 'irdnt_nm', 'gd_nm', 'gd_num', 'gd_ent_nm'])
+    irdent = df.drop_duplicates(['gd_type_cd']).sort_values('gd_type_cd')
+    irdent_dict = irdent.T.to_dict()
+  else:
+    irdent_dict = ""
+    recipe_nm = stt
+  return render(request, 'main/second.html',{"irdent_dict":irdent_dict, "login_session":login_session, "recipe_nm":recipe_nm})
 
 @csrf_exempt
 def third(request):

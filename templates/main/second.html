@@ -6,8 +6,13 @@
     <div class="container px-5 px-lg-5 my-5 mt-10">
         <div class="text-center text-white"style="width:center; height:center;" >
             <br><br><br>
-            <h1 class="display-4 fw-bolder b-1" >체크 상품을 담으시겠습니까?</h1>
-            <p class="lead fw-normal b-2" style="width:center;">맞으면 '네' 아니면 추가 하거나 뺄 항목을 말씀해주세요</p>
+            {% if irdent_dict %}
+                <h1 class="display-4 fw-bolder b-1" >체크 상품을 담으시겠습니까?</h1>
+                <p class="lead fw-normal b-2" style="width:center;">"{{ recipe_nm }}"</p>
+            {% else %}
+                <h1 class="display-4 fw-bolder b-1" >찾으시는 메뉴가 없습니다.</h1>
+                <p class="lead fw-normal b-2" style="width:center;">"{{ recipe_nm }}"</p>
+            {% endif %}
         </div>
     </div>
 </header>
@@ -33,7 +38,11 @@
         <input type="hidden" id="test_value" name="test_value" value="{{ irdent_dict }}">
     </div>
     <div style="text-align:center; margin:50px;">
-        <button type="submit">다음으로</button>
+        {% if irdent_dict %}
+            <button type="submit">다음으로</button>
+        {% else %}
+            <button type="button" onclick="location.href='{% url 'main:index' %}'" >이전으로</button>
+        {% endif %}
     </div>
 </form>
 {% endblock %}
