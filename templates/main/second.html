@@ -17,7 +17,7 @@
         <div class="row row-cols-2 row-cols-md-4 row-cols-xl-5 justify-content-center">
             {% for value in irdent_dict.values %}
                 <div class="card text-center">
-                    <img class="card-body" src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg">
+                    <img class="card-body" src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg" width="230px" height="200px">
                     {{ value.gd_nm }}
                     <div class="text-center">
                     <input type="checkbox" style="width:30px; height:30px; accent-color: #FF5E05;" checked>

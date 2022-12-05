@@ -44,14 +44,14 @@ def third(request):
   map = []
   for data in result_map:
     row = {
-      'ent_nm': data[0],
-      'map_y': data[1],
-      'map_x': data[2],
-      'ent_phone': data[3],
-      'ent_addr': data[4]
+      'ent_num': data[0],
+      'ent_nm': data[1],
+      'map_y': data[2],
+      'map_x': data[3],
+      'ent_phone': data[4],
+      'ent_addr': data[5]
     }
     map.append(row)
-
 
   ent = [i[0] for i in result_map ]
   
@@ -62,17 +62,20 @@ def third(request):
   good_col = df['gd_num']
   good = good_col.tolist()
   
-  print("api 동작")
-  cost = crawl(good, ent)
-  print("api 동작완료")
   
-  df2 = pd.DataFrame(cost).T
-  df2 = df2.reset_index()
-  df2 = df2.rename(columns={'index':'gd_num'})
 
-  merdf = pd.merge(df, df2, how='outer').fillna(0)
-  sum_df = merdf.sum().to_dict()
-  irdent_all = merdf.T.to_dict()
+  # print("api 동작")
+  # cost = crawl(good, ent)
+  # print("api 동작완료")
+  
+  # df2 = pd.DataFrame(cost).T
+  # df2 = df2.reset_index()
+  # df2 = df2.rename(columns={'index':'gd_num'})
+
+  # merdf = pd.merge(df, df2, how='outer').fillna(0)
+  # sum_df = merdf.sum().to_dict()
+  irdent_all = df.T.to_dict()
 
   dentJson = json.dumps(map, ensure_ascii=False)
-  return render(request, 'main/third.html',{ "ent_list":dentJson, 'ent':ent, 'sum_df':sum_df, 'irdent_all':irdent_all})
+
+  return render(request, 'main/third.html',{ "ent_list":dentJson, 'ent':ent, 'irdent_all':irdent_all})# 'sum_df':sum_df, 'irdent_all':irdent_all
