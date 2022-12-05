@@ -39,21 +39,21 @@
         <div class="py-3 px-5 text-right"> 
             <div class="mb-2">마트3</div>
             <div class="h2 font-weight-light">
-                {{ sum.mart3 }}
+                {{ sum_df.mart3 }}
             </div>
         </div>
 
         <div class="py-3 px-5 text-right">
             <div class="mb-2">마트2</div>
             <div class="h2 font-weight-light">
-                {{ sum.mart2 }}
+                {{ sum_df.mart2 }}
             </div>
         </div>
 
         <div class="py-3 px-5 text-right">
             <div class="mb-2">마트1</div>
             <div class="h2 font-weight-light">
-                {{ sum.mart1 }}
+                {{ sum_df.mart1 }}
             </div>
         </div>
 
@@ -102,6 +102,7 @@
     placeOverlay.setContent(contentNode);
 
     var positions = JSON.parse("{{ ent_list|escapejs }}"); // ent_list 배열
+    console.log("positions",positions)
 
     var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png', // 마커이미지의 주소입니다    
         imageSize = new kakao.maps.Size(64, 35), // 마커이미지의 크기입니다

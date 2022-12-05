@@ -15,10 +15,10 @@
 <div class="py-4">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row row-cols-2 row-cols-md-4 row-cols-xl-5 justify-content-center">
-                {% for list in irdent %}
+            {% for value in irdent_dict.values %}
                 <div class="card text-center">
-                    <img class="card-body" src="{% static '/images/cham.png' %}">
-                    {{ list.idn }}
+                    <img class="card-body" src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg">
+                    {{ value.gd_nm }}
                     <div class="text-center">
                     <input type="checkbox" style="width:30px; height:30px; accent-color: #FF5E05;" checked>
                     </div>
@@ -28,7 +28,19 @@
         </div>
     </div>
 </div>
-<div style="text-align:center; margin:50px;">
-    <a href="{% url 'main:third' %}">다음으로
-</div>
+<form method="POST" action="{% url 'main:third' %}" >
+    <div id="test_view">
+        <input type="hidden" id="test_value" name="test_value" value="{{ irdent_dict }}">
+    </div>
+    <div style="text-align:center; margin:50px;">
+        <button type="submit">다음으로</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+    function test() {
+    }
+</script>
 {% endblock %}
