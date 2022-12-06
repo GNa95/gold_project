@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from user.models import User
 
 
 class AuthGroup(models.Model):
@@ -243,12 +244,19 @@ class TbUser(models.Model):
         db_table = 'tb_user'
 
 
-class ThSearch(models.Model):
-    username = models.CharField(max_length=30)
+class ThSearch1(models.Model):
+    user_id = models.CharField(max_length=30)
     recipe_nm = models.CharField(db_column='RECIPE_NM', max_length=50)  # Field name made lowercase.
-    irdnt_nm = models.CharField(db_column='IRDNT_NM', max_length=50)  # Field name made lowercase.
-    gd_nm = models.CharField(db_column='GD_NM', max_length=100)  # Field name made lowercase.
-    ht_date = models.DateTimeField(db_column='HT_DATE', blank=True, null=True)  # Field name made lowercase.
+    ht_date = models.DateTimeField(db_column='HT_DATE', auto_now_add=True, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        db_table = 'th_search'
+        db_table = 'th_search1'
+
+
+class ThSearch2(models.Model):
+    user_id = models.CharField(max_length=30)
+    irdnt_nm = models.CharField(db_column='IRDNT_NM', max_length=50)  # Field name made lowercase.
+    gd_nm = models.CharField(db_column='GD_NM', max_length=100)  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'th_search2'

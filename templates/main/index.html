@@ -17,7 +17,7 @@
             <!--POST방식으로 이름을 stt로 받고 action은 우리가 보내려고하는 세컨드 페이지로 보낸다.-->
             <form method="post" name="stt" action="{% url 'main:second' %}">
                 <!--타입은 히든으로 안 보여준다.-->
-                <input type="hidden" name="stt" id="stt" class="stt" />
+                <input type="hidden" name="stt" id="stt" class="stt" name="sttname"/>
             </form>
             <i class="fa-solid fa-microphone-lines fa-border fa-5x"></i>
           </div>
