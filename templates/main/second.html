@@ -34,16 +34,11 @@
 </div>
 <form id="sendForm" method="POST" action="{% url 'main:third' %}" >
     <div id="test_view">
-<<<<<<< HEAD
-        <input type="hidden" id="test_value" name="test_value" value="{{ irdent_dict }}">
-        <input type="hidden" id="good" name="good" value="">
-        <input type="hidden" id="recipe" name="recipe" value="{{ recipe_nm }}">
-=======
         <input type="hidden" id="irdent" name="irdent" value="{{ irdent_dict }}">
         <input type="hidden" id="checked" name="checked" value="">
         <input type="hidden" id="lon", name="lon" value=""> 
         <input type="hidden" id="lat", name="lat" value="">
->>>>>>> 1f9db646797ec892f0dac8112b51c1330cdcff0a
+        <input type="hidden" id="recipe" name="recipe" value="{{ recipe_nm }}">
     </div>
     <div style="text-align:center; margin:50px;">
         {% if irdent_dict %}
@@ -78,17 +73,10 @@
         selectedEls.forEach((el) => {
           result += el.value + ' ';
         });
-<<<<<<< HEAD
-        $('#')
-        console.log(result)
-        document.getElementById('good').value = result
-        document.getElementById('recipe')
-        document.getElementById('form').submit();
-      }
-=======
+
         document.getElementById('checked').value = result
+        document.getElementById('recipe')
         document.getElementById('sendForm').submit();
-    }       
->>>>>>> 1f9db646797ec892f0dac8112b51c1330cdcff0a
+    }
 </script>
 {% endblock %}

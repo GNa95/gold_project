@@ -254,7 +254,7 @@ class ThSearch1(models.Model):
 
 
 class ThSearch2(models.Model):
-    user_id = models.CharField(max_length=30)
+    search = models.ForeignKey('ThSearch1', on_delete=models.CASCADE)
     irdnt_nm = models.CharField(db_column='IRDNT_NM', max_length=50)  # Field name made lowercase.
     gd_nm = models.CharField(db_column='GD_NM', max_length=100)  # Field name made lowercase.
 
