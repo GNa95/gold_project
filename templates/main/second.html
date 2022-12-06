@@ -38,6 +38,7 @@
     <div id="test_view">
         <input type="hidden" id="test_value" name="test_value" value="{{ irdent_dict }}">
         <input type="hidden" id="good" name="good" value="">
+        <input type="hidden" id="recipe" name="recipe" value="{{ recipe_nm }}">
     </div>
     <div style="text-align:center; margin:50px;">
         {% if irdent_dict %}
@@ -62,9 +63,10 @@
         selectedEls.forEach((el) => {
           result += el.value + ' ';
         });
-        
+        $('#')
         console.log(result)
         document.getElementById('good').value = result
+        document.getElementById('recipe')
         document.getElementById('form').submit();
       }
 </script>
