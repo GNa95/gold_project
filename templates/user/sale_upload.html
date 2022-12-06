@@ -25,7 +25,7 @@
           </div>
           <!-- End Title -->   
           <div class="container my-3 mt-4" style="width: 100vmin">
-            <form method="post" action="{% url 'user:sale_upload' %}">
+            <form method="post" name = "frm" action="{% url 'user:sale_upload' %}">
               {% csrf_token %}
               <div class="mb-4">
                 <label for="sale_name" class="col-md-2 text-left" ><p>세일 제목 : </p></label>
@@ -79,25 +79,21 @@
                   <thead>
                     <tr>
                       <th >No</th>
-                      <th >구분</th>
-                      <th>상품이름</th>
-                      <th>가격</th>
-                      <th>삭제</th>
+                      <th width="60%;">상품이름</th>
+                      <th width="20%;">가격</th>
+                      <th width="10%;">삭제</th>
                     </tr>
                   </thead>
                   <tbody id ="my-tbody">
                     <tr>
                       <td>1</td>
                       <td>
-                        <input type="text" id="gd_type" name="gd_type1" list="gd_type_nm" size="10" style="width:100%; border:0;">
-                        <datalist id="gd_type_nm" name="gd_type_nm">
-                          {% for gd_type in gd_type_cd %}
-                            <option value="{{  gd_type.gd_type_2 }}" />
+                        <input type="text" id="sale_gds" name="sale_gds1" list="sale_nm" size="10" style="width:100%; border:0;">
+                        <datalist id="sale_nm" name="sale_nm">
+                          {% for gds in gd_nms %}
+                            <option value="{{ gds.gd_nm }}" />
                           {% endfor %}
                         </datalist>
-                      </td>
-                      <td>
-                        <input type="text" id="sale_gds" name="sale_gds1" style="width:100%; border:0;">
                       </td>
                       <td>
                         <input type="text" id="sale_price" name="sale_price1" style="width:100%; border:0;">
@@ -117,9 +113,10 @@
                   />
               <div class="mb-4" style="text-align:center;">
                 <button
-                type="submit"
+                type="button"
                 class="btn btn-danger"
                 style="font-size: 0.8rem;"
+                onclick="checkForm();"
               >
                 등록하기
               </button>
@@ -140,25 +137,22 @@
   function add_row() {
     var row = my_tbody.insertRow(); 
     row.insertCell(0).innerHTML="";
-    //구분
+    //상품이름
     var count = parseInt(table_count.value) + 1;
     var typeNm = row.insertCell(1);
-    content = "<input type='text' id='gd_type' name='gd_type"+count+"' list='gd_type_nm' size='10' style='width:100%; border:0;'>";
-    content += "<datalist id='gd_type_nm' name='gd_type_nm'>"
-               + "{% for gd_type in gd_type_cd %}"
-               + " <option value='{{  gd_type.gd_type_2 }}' /> "
+    content = "<input type='text' id='sale_gds' name='sale_gds"+count+"' list='sale_nm' size='10' style='width:100%; border:0;'>";
+    content += "<datalist id='sale_nm' name='sale_nm'>"
+               + "{% for gds in gd_nms %}"
+               + " <option value='{{  gds.gd_nm }}' /> "
                + " {% endfor %} "
                + " </datalist> ";
     typeNm.innerHTML = content;
     
-    //상품이름
-    var gdNm = row.insertCell(2);
-    gdNm.innerHTML = "<input type='text' id='sale_gds' name='sale_gds"+count+"' size='10' style='width:100%; border:0;'>";
     //가격
-    var gdPrice = row.insertCell(3);
+    var gdPrice = row.insertCell(2);
     gdPrice.innerHTML = "<input type='text' id='sale_price' name='sale_price"+count+"' size='10' style='width:100%; border:0;'>";
     //삭제
-    var typeNm = row.insertCell(4);
+    var typeNm = row.insertCell(3);
     typeNm.innerHTML = "<span class='material-symbols-outlined gold-105' style='text-align:center;' onclick='delete_row(this); autoNumbering();'>delete</span>";
 
     document.getElementById("table_count").value=count;
@@ -176,5 +170,21 @@
       my_tbody.rows[i].cells[0].innerHTML = "<label for='imanager_ipaddr_label'>"+(i+1)+"</label>";
     }
   }
+
+  function checkForm(){
+    if(frm.sale_name.value=="") {
+      frm.sale_name.focus();
+      alert("세일 제목을 입력해 주십시오.");
+    }
+    else if(frm.start_date.value==""|frm.start_date.value=="") {
+      frm.start_date.focus();
+      alert("세일 기간을 입력해 주십시오.");
+    }
+    else {
+      frm.submit()
+    }
+  }
+
+
 </script>
 {% endblock%}

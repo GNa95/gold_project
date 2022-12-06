@@ -19,30 +19,35 @@
 
 <div class="py-4">
     <div class="container px-4 px-lg-5 mt-5">
-        <form action="{% url 'main:third' %}" method="POST">
-            <div class="row row-cols-2 row-cols-md-4 row-cols-xl-5 justify-content-center">
-                {% for value in irdent_dict.values %}
-                    <div class="card text-center">
-                        <img class="card-body" src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg" width="230px" height="200px">
-                        {{ value.gd_nm }}
-                        <div class="text-center">
-                            <input type="checkbox" name="selected" id="selected" value="{{ value.gd_num }}" style="width:30px; height:30px; accent-color: #FF5E05;" checked>
-                        </div> 
-                    </div>   
-                {% endfor %}
-            </div>
-        </form>
+        <div class="row row-cols-2 row-cols-md-4 row-cols-xl-5 justify-content-center">
+            {% for value in irdent_dict.values %}
+                <div class="card text-center">
+                    <img class="card-body" src="{% get_static_prefix %}images/IMAGE/{{ value.gd_nm }}.jpg" width="230px" height="200px">
+                    {{ value.gd_nm }}
+                    <div class="text-center">
+                        <input type="checkbox" name="selected" id="selected" value="{{ value.gd_num }}" style="width:30px; height:30px; accent-color: #FF5E05;" checked>
+                    </div> 
+                </div>   
+            {% endfor %}
+        </div>
     </div>
 </div>
-<form method="POST" action="{% url 'main:third' %}" >
+<form id="sendForm" method="POST" action="{% url 'main:third' %}" >
     <div id="test_view">
+<<<<<<< HEAD
         <input type="hidden" id="test_value" name="test_value" value="{{ irdent_dict }}">
         <input type="hidden" id="good" name="good" value="">
         <input type="hidden" id="recipe" name="recipe" value="{{ recipe_nm }}">
+=======
+        <input type="hidden" id="irdent" name="irdent" value="{{ irdent_dict }}">
+        <input type="hidden" id="checked" name="checked" value="">
+        <input type="hidden" id="lon", name="lon" value=""> 
+        <input type="hidden" id="lat", name="lat" value="">
+>>>>>>> 1f9db646797ec892f0dac8112b51c1330cdcff0a
     </div>
     <div style="text-align:center; margin:50px;">
         {% if irdent_dict %}
-            <button type="submit" onclick="getCheckboxValue()">다음으로</button>
+            <button type="submit" onclick="getValue()">다음으로</button>
         {% else %}
             <button type="button" onclick="location.href='{% url 'main:index' %}'" >이전으로</button>
         {% endif %}
@@ -52,7 +57,17 @@
 
 {% block script %}
 <script type='text/javascript'>
-    function getCheckboxValue()  {
+    navigator.geolocation.getCurrentPosition(geoSuccess, getError);
+    function geoSuccess(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        document.getElementById('lon').value = lon
+        document.getElementById('lat').value = lat
+    }
+    function getError() {
+        alert('Geolocation Error')
+    }
+    function getValue()  {
         // 선택된 목록 가져오기
         const query = 'input[name="selected"]:checked';
         const selectedEls = 
@@ -63,11 +78,17 @@
         selectedEls.forEach((el) => {
           result += el.value + ' ';
         });
+<<<<<<< HEAD
         $('#')
         console.log(result)
         document.getElementById('good').value = result
         document.getElementById('recipe')
         document.getElementById('form').submit();
       }
+=======
+        document.getElementById('checked').value = result
+        document.getElementById('sendForm').submit();
+    }       
+>>>>>>> 1f9db646797ec892f0dac8112b51c1330cdcff0a
 </script>
 {% endblock %}

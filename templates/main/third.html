@@ -12,9 +12,9 @@
                         <th class="border-0 text-uppercase small font-weight-bold">재료명</th>
                         <th class="border-0 text-uppercase small font-weight-bold">상품명</th>
                         <th class="border-0 text-uppercase small font-weight-bold">제조사</th>
-                        <th class="border-0 text-uppercase small font-weight-bold">마트1</th>
-                        <th class="border-0 text-uppercase small font-weight-bold">마트2</th>
-                        <th class="border-0 text-uppercase small font-weight-bold">마트3</th>
+                        {% for list in ent_nm %}
+                        <th class="border-0 text-uppercase small font-weight-bold">{{ list }}</th>
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
@@ -35,28 +35,14 @@
     </div>
     <!--마트-->
     <div class="d-flex flex-row-reverse bg-dark text-white p-1">
-        
-        <div class="py-3 px-5 text-right"> 
-            <div class="mb-2">마트3</div>
-            <div class="h2 font-weight-light">
-                {{ sum_df.mart3 }}
+        {% for list in map_list %}
+            <div class="py-3 px-5 text-right"> 
+                <div class="mb-2">{{ list.ent_nm }}</div>
+                <div class="h2 font-weight-light">
+                    {{ list.mart }}
+                </div>
             </div>
-        </div>
-
-        <div class="py-3 px-5 text-right">
-            <div class="mb-2">마트2</div>
-            <div class="h2 font-weight-light">
-                {{ sum_df.mart2 }}
-            </div>
-        </div>
-
-        <div class="py-3 px-5 text-right">
-            <div class="mb-2">마트1</div>
-            <div class="h2 font-weight-light">
-                {{ sum_df.mart1 }}
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
 </section>
 <!--지도-->
@@ -103,7 +89,7 @@
     placeOverlay.setContent(contentNode);
 
     var positions = JSON.parse("{{ ent_list|escapejs }}"); // ent_list 배열
-    console.log("positions",positions)
+    //console.log("positions",positions)
 
     var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png', // 마커이미지의 주소입니다    
         imageSize = new kakao.maps.Size(64, 35), // 마커이미지의 크기입니다
