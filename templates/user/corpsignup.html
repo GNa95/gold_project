@@ -14,8 +14,15 @@
             </div>
             <div class="mb-4">
                 <label for="username" class="col-md-4 text-right">회사명<span style="color:red;"> * </span>:</label>
-                <div class="col-md-7 gold-106">
-                    <input type="text" class="form-control" name="username" id="username" value="{{ form.username.value|default_if_none:'' }}">
+                <button type="button" class="col-md-1 btn btn-danger search gold-106"><i class="fa fa-search"></i></button>
+                <div class="col-md-6 gold-106" width="100%">
+                    <input type="text" class="form-control" name="username" id="username" list="ent_list" value="{{ form.username.value|default_if_none:'' }}">
+                    <datalist id="ent_list" name="ent_list">
+                        {% for ent in ent_nms %}
+                            <option value="{{ent.ent_nm}}" />
+                        {% endfor %}
+                    </datalist>
+                    
                 </div>
             </div>
             <div class="mb-4">
@@ -54,4 +61,29 @@
         </form>
     </div>
 </section>
+{% endblock %}
+{% block script %}
+<script>
+    let btnSh = document.querySelector('.search')
+    btnSh.addEventListener('click',e => {
+        let ent_nm = document.querySelector("#username").value;
+        $.ajax({
+            url : '{% url 'user:ent_search' %}',
+            type : 'POST',
+            data : JSON.stringify({"ent_nm":ent_nm}),
+            success:function(data){
+                if(data.ENT_NM == ent_nm){
+                    document.querySelector("#user_phone").value = data.ENT_PHONE;
+                    document.querySelector("#user_addr").value = data.ENT_ADDR;
+                }
+                else {
+                    alert('찾으시는 업체가 없습니다.');
+                }
+            },
+            error: function(){
+                alert('ERROR');
+            }
+        });
+    });
+</script>
 {% endblock %}

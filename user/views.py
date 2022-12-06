@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import LoginForm, SaleForm
-from django.contrib.auth import login, authenticate
+from .forms import LoginForm
 from argon2 import PasswordHasher
 #from user.forms import UserForm
 
 from .models import *
-from main.models import TbGdCd
 from django.db import connection
 from main.func import dictfetchall
+from datetime import datetime, timedelta
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
+import json
 # Create your views here.
 
 #개인&회사 회원가입
@@ -36,7 +38,12 @@ def signup(request):
 # #회사 회원가입
 def corpsignup(request):
     if request.method == 'GET':
-        return render(request, 'user/corpsignup.html')
+        cursor = connection.cursor()
+        sql = "select distinct ent_nm from tb_ent;"
+        cursor.execute(sql)
+        ent_nm = dictfetchall(cursor)
+        connection.close()
+        return render(request, 'user/corpsignup.html',{"ent_nms":ent_nm})
     elif request.method =='POST':
         user_name = request.POST.get('user_id','')
         user_id = request.POST.get('username','')
@@ -108,13 +115,12 @@ def mypage(request):
         return render(request, 'user/history_search.html', {"login_session":login_session})
     else:
         cursor = connection.cursor()
-        sql = "select id, sale_name," + \
-              "(select concat(group_concat(gd_type_nm SEPARATOR ', '),' 등') from (select gd_type_nm from th_saled b where a.id = b.sale_id LIMIT 3) c) as 'sale_gds'," + \
+        sql = "select id, sale_name, (select concat(group_concat(d.gd_type_2 SEPARATOR ', '),' 등') " + \
+              "from (select distinct gd_type_cd from th_saled b where a.id = b.sale_id LIMIT 3) c, tb_gd_cd d where c.gd_type_cd = d.gd_type_cd) as 'sale_gds'," + \
               "(select count(*) from th_saled b where a.id = b.sale_id) as 'sale_gds_cnt'," + \
               "concat(date_format(start_date,'%Y/%m/%d'), ' ~ ', date_format(end_date,'%Y/%m/%d')) as 'sale_date'" + \
-              "from th_sale a where user='" + login_session + "' order by end_date desc, start_date desc;"
+              "from th_sale a where user='" + login_session + "' order by start_date desc, end_date desc;"
         cursor.execute(sql)
-        # result = cursor.fetchall()
         result = dictfetchall(cursor)
         cursor.close()
         return render(request, 'user/history_sale.html', {"sale_data":result, "login_session":login_session})
@@ -136,34 +142,53 @@ def member_edit(request):
 
 def sale_upload(request):
     login_session = request.session.get('login_session', '')
+    cursor = connection.cursor()
     if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            sale = form.save(commit=False)
-            sale.user = login_session
-            sale.save()
+        sale_name = request.POST.get('sale_name')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(hours=23, minutes=59, seconds=59)
+        sale = ThSale(sale_name=sale_name, user=login_session, start_date=start_date, end_date=end_date)
+        sale.save()
         count = request.POST.get('table_count')
+        
         for i in range(1,int(count)+1):
             try:
                 num = str(i)
-                gd_type_nm = request.POST.get('gd_type'+num)
+                # gd_type_nm = request.POST.get('gd_type'+num)
                 sale_gds = request.POST.get('sale_gds'+num)
                 sale_price = request.POST.get('sale_price'+num)
-                sale_detail = ThSaleDetail(sale=sale, gd_type_nm=gd_type_nm, sale_gds=sale_gds , sale_price=sale_price)
+                gd_type_sql = "select gd_type_cd from tb_gds where gd_nm = '" + sale_gds + "';"
+                cursor.execute(gd_type_sql)
+                gd_type_cd = cursor.fetchall()[0][0]
+                sale_detail = ThSaleDetail(sale=sale, gd_type_cd=gd_type_cd, sale_gds=sale_gds , sale_price=sale_price)
                 sale_detail.save()
             except:
                 pass
         return redirect('user:mypage')
-    sql = "select gd_type_2 from tb_gd_cd where gd_type_cd like '%1__';"
-    cursor = connection.cursor()
+    sql = "select distinct(gd_nm) from tb_gds;"
     cursor.execute(sql)
-    gd_type_cd = dictfetchall(cursor)
-    return render(request, 'user/sale_upload.html', {"gd_type_cd":gd_type_cd, "login_session":login_session})
+    gd_nms = dictfetchall(cursor)
+    connection.close()
+    return render(request, 'user/sale_upload.html', {"gd_nms":gd_nms, "login_session":login_session})
 
 def sale_edit(request, sale_id):
     login_session = request.session.get('login_session', '')
     sale = get_object_or_404(ThSale, pk=sale_id)
-    saled = ThSaleDetail.objects.filter(sale=sale)
+    saleSql = "select gd_type_2, sale_gds, sale_price from th_saled a, tb_gd_cd b where a.gd_type_cd = b.gd_type_cd and sale_id = " + str(sale_id) +";"
+    cursor = connection.cursor()
+    cursor.execute(saleSql)
+    saled = dictfetchall(cursor)
+    connection.close()
     return render(request, 'user/sale_edit.html', {"sale":sale,"saled":saled,"login_session":login_session})
 
-
+@csrf_exempt
+def ent_search(request):
+    jsonObject = json.loads(request.body)
+    ent_nm =   jsonObject.get('ent_nm')
+    entsql = "select * from tb_ent where ent_nm ='" + ent_nm + "';"
+    cursor = connection.cursor()
+    cursor.execute(entsql)
+    ent_info = dictfetchall(cursor)
+    return JsonResponse(ent_info[0])
+    

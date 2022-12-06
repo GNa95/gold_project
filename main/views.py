@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.db import connection
 import pandas as pd
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .func import crawl
+from .func import crawl, dictfetchall
 # Create your views here.
 
 def index(request):
@@ -24,7 +24,6 @@ def second(request):
   
   if recipeRst:
     recipe_nm = recipeRst[0][0]
-    print(recipe_nm)
     strSql = "select tb_irdent.GD_TYPE_CD, IRDNT_NM, GD_NM, GD_NUM, GD_ENT_NM "\
             + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
             + "where RECIPE_NM like '"+ recipe_nm + "' order by rand();"
@@ -42,31 +41,20 @@ def second(request):
 
 @csrf_exempt
 def third(request):
-  lon = "126.982732"
-  lat = "37.488236"
+  lon = request.POST.get("lon")
+  lat = request.POST.get("lat")
   cursor = connection.cursor()
-  sqlMap = "select ENT_NUM, ENT_NM, MAP_Y, MAP_X,ENT_PHONE,ENT_ADDR, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
+  sqlMap = "select ent_num, ent_nm, map_y, map_x,ent_phone,ent_addr, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
 
   cursor.execute(sqlMap)
-  result_map = cursor.fetchall()
+  result_map = dictfetchall(cursor)
   connection.close()
 
-  map_list = []
-  for data in result_map:
-    row = {
-      'ent_num': data[0],
-      'ent_nm': data[1],
-      'map_y': data[2],
-      'map_x': data[3],
-      'ent_phone': data[4],
-      'ent_addr': data[5]
-    }
-    map_list.append(row)
-
-  ent = [i[0] for i in result_map ]
+  ent = [i["ent_num"] for i in result_map ]
+  ent_nm = [i["ent_nm"] for i in result_map]
   
-  irdent = request.POST.get("test_value")
-  checked = request.POST.get('good')
+  irdent = request.POST.get("irdent")
+  checked = request.POST.get('checked')
   irdent = eval(irdent)
   checked = checked.split()
 
@@ -85,9 +73,15 @@ def third(request):
   df2 = df2.rename(columns={'index':'gd_num'})
 
   merdf = pd.merge(df, df2, how='outer').fillna(0)
-  sum_df = merdf.sum().to_dict()
+  merdf[['mart1', 'mart2', 'mart3']] = merdf[['mart1', 'mart2', 'mart3']].astype(int)
+  for i, j in enumerate(result_map):
+    j['mart'] = format(int(merdf['mart'+str(i+1)].sum()), ',')
+  
+  merdf = merdf.replace(0,"미제공")
   irdent_all = merdf.T.to_dict()
 
-  dentJson = json.dumps(map_list, ensure_ascii=False)
+  dentJson = json.dumps(result_map, ensure_ascii=False)
+  
+  result_map.reverse()
 
-  return render(request, 'main/third.html',{ "ent_list":dentJson, 'ent':ent, 'sum_df':sum_df, 'irdent_all':irdent_all})
+  return render(request, 'main/third.html',{"ent_list":dentJson, 'irdent_all':irdent_all, 'map_list':result_map, 'ent_nm':ent_nm}) 

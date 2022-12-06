@@ -42,7 +42,7 @@ class secinquiry(models.Model):
 
 # sale이력 Table
 class ThSale(models.Model):
-    sale_name = models.CharField(max_length=20)
+    sale_name = models.CharField(max_length=30)
     user = models.CharField(max_length=20)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
@@ -55,8 +55,8 @@ class ThSale(models.Model):
 
 class ThSaleDetail(models.Model):
     sale = models.ForeignKey('ThSale', on_delete=models.CASCADE)
-    gd_type_nm = models.CharField(max_length=20)
-    sale_gds = models.CharField(max_length=20)
+    gd_type_cd = models.CharField(max_length=10)
+    sale_gds = models.CharField(max_length=100)
     sale_price = models.IntegerField()
 
     class Meta:
