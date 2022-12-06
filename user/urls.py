@@ -14,6 +14,7 @@ urlpatterns = [
 
     path('', inquirys, name='inquirys'), #문의하기 데이터를 처리할 URL
 
+    path('ent_search/',views.ent_search, name="ent_search"),
 
     # mypage
     path('mypage/',views.mypage, name='mypage'),
