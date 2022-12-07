@@ -77,8 +77,7 @@ def third(request):
     TBsearch = ThSearch2(search_id=search_id, irdnt_nm=row[2], gd_nm=row[3])
     TBsearch.save()
   
-  good_col = df['gd_num']
-  good = good_col.tolist()
+  good = df['gd_num'].tolist()
   
   print("api 동작")
   cost = crawl(good, ent)
@@ -89,10 +88,8 @@ def third(request):
   df2 = df2.rename(columns={'index':'gd_num'})
 
   merdf = pd.merge(df, df2, how='outer').fillna(0)
-  irdent_all = merdf.T.to_dict()
   
-  irdent_all = df.T.to_dict()
-  merdf = pd.merge(df, df2, how='outer').fillna(0)
+  # 소숫점 format
   merdf[['mart1', 'mart2', 'mart3']] = merdf[['mart1', 'mart2', 'mart3']].astype(int)
   for i, j in enumerate(result_map):
     j['mart'] = format(int(merdf['mart'+str(i+1)].sum()), ',')
