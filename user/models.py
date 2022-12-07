@@ -12,15 +12,15 @@ from django.utils import timezone
 # }
 
 class User(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=100, unique=True)
-    user_id = models.CharField(max_length=50)
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=100)
+    user_id = models.CharField(max_length=50, unique=True)
     user_phone = models.CharField(max_length=40, verbose_name='유저 전화번호')
     user_addr = models.CharField(max_length=40, verbose_name='유저 주소')
     user_level =models.CharField(max_length=8 ,verbose_name="등급")
 
     def __str__(self): #2
-        return self.username
+        return self.user_id
     
     class Meta: #3
         db_table = 'TB_USER'

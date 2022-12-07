@@ -3,7 +3,7 @@
 {% block content %}
 <section class="py-10 bg-white" style="height: calc(96vh - 19px); width: 100%;">
     <div class="container my-3 mt-5" style="width:65vmin">
-        <form method="post" action="{% url 'user:signup' %}">
+        <form method="post" name="frm" action="{% url 'user:signup' %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="user_id" class="col-md-4 text-right">사용자 ID<span style="color:red;"> * </span>:</label>
@@ -30,13 +30,13 @@
                 </div>
             </div>
             <div class="mb-4">
-                <label for="user_phone" class="col-md-4 text-right">전화번호<span style="color:red;"> * </span>:</label>
+                <label for="user_phone" class="col-md-4 text-right">전화번호&emsp;:</label>
                 <div class="col-md-7 gold-106">
                     <input type="text" class="form-control" name="user_phone" id="user_phone" value="{{ form.user_phone.value|default_if_none:'' }}">
                 </div>
             </div>
             <div class="mb-4">
-                <label for="user_addr" class="col-md-4 text-right">주소<span style="color:red;"> * </span>:</label>
+                <label for="user_addr" class="col-md-4 text-right">주소&emsp;:</label>
                 <div class="col-md-7 gold-106">
                     <input type="text" class="form-control" name="user_addr" id="user_addr" value="{{ form.user_addr.value|default_if_none:'' }}">
                 </div>
@@ -47,9 +47,50 @@
                 </div>
             </div>
             <div style="text-align: center;">
-                <button type="submit" class="btn btn-danger">생성하기</button>
+                <button type="button" class="btn btn-danger" onclick="checkForm();">생성하기</button>
             </div>
         </form>
     </div>
 </section>
+{% endblock %}
+{% block script %}
+<script>
+    function checkForm(){
+        if(frm.user_id.value == "") {
+            frm.user_id.focus();
+            alert("ID를 입력해 주십시오.");
+        }
+        else if(frm.username.value == "") {
+            frm.username.focus();
+            alert("이름을 입력해 주십시오.");
+        }
+        else if(frm.password.value == "") {
+            frm.password.focus();
+            alert("비밀번호를 입력해 주십시오.");
+        }
+        else if(frm.password.value != frm.password2.value) {
+            frm.password2.focus();
+            alert("비밀번호가 일치하지않습니다.");
+        }
+        else {
+            let user_id = document.querySelector("#user_id").value;
+            $.ajax({
+                url : '{% url 'user:idCheck' %}',
+                type : 'POST',
+                data : JSON.stringify({"user_id":user_id}),
+                success:function(data){
+                    if(data.alert){
+                        alert(data.alert);
+                    }
+                    else {
+                        frm.submit();
+                    }
+                },
+                error: function(){
+                    alert('ERROR');
+                }
+            });
+        }
+    }
+</script>
 {% endblock %}

@@ -4,7 +4,7 @@
 {% block content %}
 <section class="py-10 bg-white" style="height: calc(96vh - 19px); width: 100%;">
     <div class="container my-3 mt-5" style="width:65vmin">
-        <form method="post" action="{% url 'user:signup' %}">
+        <form method="post" name="frm" action="{% url 'user:signup' %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="user_id" class="col-md-4 text-right">사용자 ID<span style="color:red;"> * </span>:</label>
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div style="text-align: center;">
-                <button type="submit" class="btn btn-danger">생성하기</button>
+                <button type="button" class="btn btn-danger" onclick="checkForm();">생성하기</button>
             </div>
         </form>
     </div>
@@ -72,12 +72,15 @@
             type : 'POST',
             data : JSON.stringify({"ent_nm":ent_nm}),
             success:function(data){
-                if(data.ENT_NM == ent_nm){
+                if(data.ENT_NM){
                     document.querySelector("#user_phone").value = data.ENT_PHONE;
                     document.querySelector("#user_addr").value = data.ENT_ADDR;
                 }
                 else {
-                    alert('찾으시는 업체가 없습니다.');
+                    document.querySelector("#username").value = "";
+                    document.querySelector("#user_phone").value = "";
+                    document.querySelector("#user_addr").value = "";
+                    alert(data.alert);
                 }
             },
             error: function(){
@@ -85,5 +88,26 @@
             }
         });
     });
+    function checkForm(){
+        if(frm.user_id.value == "") {
+            frm.user_id.focus();
+            alert("ID를 입력해 주십시오.");
+        }
+        else if(frm.username.value == "") {
+            frm.username.focus();
+            alert("회사명을 입력해 주십시오.");
+        }
+        else if(frm.password.value == "") {
+            frm.password.focus();
+            alert("비밀번호를 입력해 주십시오.");
+        }
+        else if(frm.password.value != frm.password2.value) {
+            frm.password2.focus();
+            alert("비밀번호가 일치하지않습니다.");
+        }
+        else {
+            frm.submit();
+        }
+    }
 </script>
 {% endblock %}
