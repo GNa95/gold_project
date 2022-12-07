@@ -6,7 +6,8 @@ from django.db import connection
 
 def crawl(good, ent):
     url = 'http://openapi.price.go.kr/openApiImpl/ProductPriceInfoService/getProductPriceInfoSvc.do?'
-    serviceKey = "serviceKey=sUIo/mwzlBQJ/rIBdqyj5SXiXUxaOrRv6H+ZpNgJ1URCmNPNQMlC5imaW7yE4lngVBxrRcW/3TNbtSsoCGvLhg"
+    serviceKey = "serviceKey=ko1Up%2BVONzNYXUI%2FNw0NU1Gc8Q9yPd03270Fz20hNDtlwk6NZuG6oLVerlB5GIYDhpQNUGbfy3JCYiAWSMSgpw%3D%3D"
+    # serviceKey = "serviceKey=sUIo/mwzlBQJ/rIBdqyj5SXiXUxaOrRv6H+ZpNgJ1URCmNPNQMlC5imaW7yE4lngVBxrRcW/3TNbtSsoCGvLhg"
 
     date = [20221118, 20221104, 20221021, 20221007, 20220923, 20220902, 20220819]
     # good =[1072, 248, 945, 5035, 5141, 5013, 5140, 856, 5217, 1225]
@@ -31,9 +32,10 @@ def crawl(good, ent):
                 goodprice = int(db_result[0][0])
             else:
                 for i in date:
-                    goodInspectDay = '==&goodInspectDay=%d'%i
+                    goodInspectDay = '&goodInspectDay=%d'%i
                     data = urllib.request.Request(url+serviceKey+goodInspectDay+entpId+goodId)
                     # data = requests.get(url+serviceKey+goodInspectDay+entpId+goodId)
+                    print(url+serviceKey+goodInspectDay+entpId+goodId)
                     time.sleep(0.1)
                     text = urllib.request.urlopen(data).read()
                     soup = BeautifulSoup(text, 'lxml')
@@ -43,6 +45,7 @@ def crawl(good, ent):
                         # goodid = soup.select_one("goodid").string
                         goodprice = soup.select_one("goodprice").string
                         goodprice = int(goodprice)
+                        print("가격:", goodprice)
                         break
                     except:
                         goodprice= None
