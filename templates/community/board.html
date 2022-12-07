@@ -63,7 +63,7 @@
                                     </a>  
                                 </td>
                                 <td class="name">{{ board.writer }}</td>
-                                <td class="fs-6">{{ board.created_dt }}</td>
+                                <td class="fs-6">{{ board.created_dt|date:"Y-m-d" }}</td>
                             </tr>
 
                     {% endfor %}
