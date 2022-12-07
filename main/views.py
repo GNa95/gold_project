@@ -12,7 +12,18 @@ from .func import crawl, dictfetchall
 
 def index(request):
   login_session = request.session.get('login_session', '')
-  return render(request, 'main/index.html', {"login_session" : login_session})
+
+  cursor = connection.cursor()
+  sqlRank = "SELECT RECIPE_NM, count(RECIPE_NM) as count from th_search1 group by RECIPE_NM having count(RECIPE_NM) > 1 order by 2 desc limit 5;"
+
+  cursor.execute(sqlRank)
+  result_rank = dictfetchall(cursor)
+  connection.close()
+
+  rm = pd.DataFrame(result_rank, columns=['RECIPE_NM', 'rangking'])
+  rank_all = rm.T.to_dict()
+
+  return render(request, 'main/index.html', {"login_session" : login_session, "rank_all":rank_all})
 
 @csrf_exempt
 def second(request):
