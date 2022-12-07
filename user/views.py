@@ -104,7 +104,7 @@ def inquirys(request):
         inquirys_text = request.POST.get('qutext')
         new_inquirys = secinquiry(inquirys_name=inquirys_name, inquirys_email=inquirys_email, inquirys_text=inquirys_text)
         new_inquirys.save()
-    return render(request, 'main/index.html')
+    return redirect('/')
 
 
 # mypage
