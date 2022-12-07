@@ -112,4 +112,4 @@ def third(request):
   
   result_map.reverse()
   
-  return render(request, 'main/third.html',{"ent_list":dentJson, 'irdent_all':irdent_all, 'map_list':result_map, 'ent_nm':ent_nm, "login_session":login_session}) 
+  return render(request, 'main/third.html',{"ent_list":dentJson, 'irdent_all':irdent_all, 'map_list':result_map, 'ent_nm':ent_nm, "login_session":login_session,"lon":lon,"lat":lat}) 

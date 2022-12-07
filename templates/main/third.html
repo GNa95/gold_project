@@ -122,13 +122,13 @@
     }
 
     // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
-    function displayPlaceInfo(position) {
+    function displayPlaceInfo(position, locPosition) {
         // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
         var content = '<div class="placeinfo">' +
             '   <div class="gold-55" onclick="closeOverlay()" title="닫기"></div>' + 
             '   <a class="title" target="_blank" title="' +
             position.ent_nm +
-            '">' +
+            '" href="https://map.kakao.com/link/to/'+position.ent_nm+','+position.map_x+','+position.map_y+'">' +
             position.ent_nm +
             "</a>"
         content +=
