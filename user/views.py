@@ -187,8 +187,29 @@ def ent_search(request):
     jsonObject = json.loads(request.body)
     ent_nm =   jsonObject.get('ent_nm')
     entsql = "select * from tb_ent where ent_nm ='" + ent_nm + "';"
+    usersql = "select * from tb_user where username='" + ent_nm + "';"
     cursor = connection.cursor()
     cursor.execute(entsql)
     ent_info = dictfetchall(cursor)
-    return JsonResponse(ent_info[0])
+    cursor.execute(usersql)
+    user_info = dictfetchall(cursor)
+    connection.close()
+    if ent_info:
+        if user_info:
+            return JsonResponse({"alert":"이 업체는 이미 존재합니다."})
+        return JsonResponse(ent_info[0])
+    return JsonResponse({"alert":"찾으시는 업체가 없습니다."})
     
+
+@csrf_exempt
+def idCheck(request):
+    jsonObject = json.loads(request.body)
+    user_id = jsonObject.get('user_id')
+    usersql = "select * from tb_user where user_id ='" + user_id + "';"
+    cursor = connection.cursor()
+    cursor.execute(usersql)
+    user_info = dictfetchall(cursor)
+    connection.close()
+    if user_info:
+        return JsonResponse({"alert":"아이디가 이미 존재합니다."})
+    return JsonResponse({})
