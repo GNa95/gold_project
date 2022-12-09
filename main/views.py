@@ -12,18 +12,7 @@ from .func import crawl, dictfetchall
 
 def index(request):
   login_session = request.session.get('login_session', '')
-
-  cursor = connection.cursor()
-  sqlRank = "select recipe_nm, count(recipe_nm) as count from th_search1 group by recipe_nm having count(recipe_nm) > 1 order by 2 desc limit 5;"
-
-  cursor.execute(sqlRank)
-  result_rank = dictfetchall(cursor)
-  connection.close()
-
-  rm = pd.DataFrame(result_rank, columns=['recipe_nm', 'rangking'])
-  rank_all = rm.T.to_dict()
-
-  return render(request, 'main/index.html', {"login_session" : login_session, "rank_all":rank_all})
+  return render(request, 'main/index.html', {"login_session" : login_session})
 
 @csrf_exempt
 def second(request):
@@ -78,6 +67,36 @@ def third(request):
   df = pd.DataFrame(irdent).T
   df = df[df["gd_num"].isin(list(map(int,checked)))]
 
+  good = df['gd_num'].tolist()
+
+  df['mart1'] = None
+  df['mart2'] = None
+  df['mart3'] = None
+  df = df.set_index('gd_num') 
+
+  print("api 동작")
+  cost = crawl(good, ent)
+  print("api 동작완료")
+  
+  for i,j in cost.items():
+    for key, value in j.items():
+      df.loc[key,[i]] = value
+      
+  # 소숫점 format 
+  df = df.fillna(0)
+  df[['mart1', 'mart2', 'mart3']] = df[['mart1', 'mart2', 'mart3']].astype(int)
+  
+  for i, j in enumerate(result_map):
+    j['mart'] = format(int(df['mart'+str(i+1)].sum()), ',')
+  
+  df = df.replace(0,"미제공")
+  irdent_all = df.T.to_dict()
+
+  dentJson = json.dumps(result_map, ensure_ascii=False)
+  
+  result_map.reverse()
+  
+  # 검색이력
   recipe_name =  request.POST.get('recipe')
   today = DateFormat(datetime.now()).format('Ymd')
   
@@ -88,28 +107,4 @@ def third(request):
     TBsearch = ThSearch2(search_id=search_id, irdnt_nm=row[2], gd_nm=row[3])
     TBsearch.save()
   
-  good = df['gd_num'].tolist()
-  
-  print("api 동작")
-  cost = crawl(good, ent)
-  print("api 동작완료")
-  
-  df2 = pd.DataFrame(cost).T
-  df2 = df2.reset_index()
-  df2 = df2.rename(columns={'index':'gd_num'})
-
-  merdf = pd.merge(df, df2, how='outer').fillna(0)
-  
-  # 소숫점 format
-  merdf[['mart1', 'mart2', 'mart3']] = merdf[['mart1', 'mart2', 'mart3']].astype(int)
-  for i, j in enumerate(result_map):
-    j['mart'] = format(int(merdf['mart'+str(i+1)].sum()), ',')
-  
-  merdf = merdf.replace(0,"미제공")
-  irdent_all = merdf.T.to_dict()
-
-  dentJson = json.dumps(result_map, ensure_ascii=False)
-  
-  result_map.reverse()
-  
-  return render(request, 'main/third.html',{"ent_list":dentJson, 'irdent_all':irdent_all, 'map_list':result_map, 'ent_nm':ent_nm, "login_session":login_session,"lon":lon,"lat":lat}) 
+  return render(request, 'main/third.html',{"ent_list":dentJson, 'map_list':result_map, 'ent_nm':ent_nm, "login_session":login_session, 'irdent_all':irdent_all})
