@@ -230,20 +230,6 @@ class TbUnit(models.Model):
         managed = False
         db_table = 'tb_unit'
 
-
-class TbUser(models.Model):
-    username = models.CharField(unique=True, max_length=50)
-    password = models.CharField(unique=True, max_length=100)
-    user_id = models.CharField(max_length=50)
-    user_phone = models.CharField(max_length=40)
-    user_addr = models.CharField(max_length=40)
-    user_level = models.CharField(max_length=8)
-
-    class Meta:
-        managed = False
-        db_table = 'tb_user'
-
-
 class ThSearch1(models.Model):
     user_id = models.CharField(max_length=30)
     recipe_nm = models.CharField(db_column='RECIPE_NM', max_length=50)  # Field name made lowercase.
