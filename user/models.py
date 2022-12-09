@@ -23,7 +23,7 @@ class User(models.Model):
         return self.user_id
     
     class Meta: #3
-        db_table = 'TB_USER'
+        db_table = 'tb_user'
         verbose_name = '유저'
         verbose_name_plural = '유저'
     
@@ -37,7 +37,7 @@ class secinquiry(models.Model):
     inquirys_text = models.TextField(max_length=500)
 
     class Meta: #3
-        db_table = 'TB_inquiry'
+        db_table = 'tb_inquiry'
 
 
 # sale이력 Table
@@ -51,7 +51,7 @@ class ThSale(models.Model):
         return self.sale_name
 
     class Meta: #3
-        db_table = 'TH_SALE'
+        db_table = 'th_sale'
 
 class ThSaleDetail(models.Model):
     sale = models.ForeignKey('ThSale', on_delete=models.CASCADE)
@@ -60,5 +60,5 @@ class ThSaleDetail(models.Model):
     sale_price = models.IntegerField()
 
     class Meta:
-        db_table = 'TH_SALED'
+        db_table = 'th_saled'
         
