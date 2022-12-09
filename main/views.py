@@ -14,13 +14,13 @@ def index(request):
   login_session = request.session.get('login_session', '')
 
   cursor = connection.cursor()
-  sqlRank = "SELECT RECIPE_NM, count(RECIPE_NM) as count from th_search1 group by RECIPE_NM having count(RECIPE_NM) > 1 order by 2 desc limit 5;"
+  sqlRank = "select recipe_nm, count(recipe_nm) as count from th_search1 group by recipe_nm having count(recipe_nm) > 1 order by 2 desc limit 5;"
 
   cursor.execute(sqlRank)
   result_rank = dictfetchall(cursor)
   connection.close()
 
-  rm = pd.DataFrame(result_rank, columns=['RECIPE_NM', 'rangking'])
+  rm = pd.DataFrame(result_rank, columns=['recipe_nm', 'rangking'])
   rank_all = rm.T.to_dict()
 
   return render(request, 'main/index.html', {"login_session" : login_session, "rank_all":rank_all})
@@ -39,9 +39,9 @@ def second(request):
   
   if recipeRst:
     recipe_nm = recipeRst[0][0]
-    strSql = "select tb_irdent.GD_TYPE_CD, IRDNT_NM, GD_NM, GD_NUM, GD_ENT_NM "\
-            + "from tb_recipe join tb_irdent on tb_recipe.RECIPE_NUM = tb_irdent.RECIPE_NUM join tb_gds on tb_irdent.GD_TYPE_CD = tb_gds.GD_TYPE_CD "\
-            + "where RECIPE_NM like '"+ recipe_nm + "' order by rand();"
+    strSql = "select tb_irdent.gd_type_cd, irdnt_nm, gd_nm, gd_num, gd_ent_nm "\
+            + "from tb_recipe join tb_irdent on tb_recipe.recipe_num = tb_irdent.recipe_num join tb_gds on tb_irdent.gd_type_cd = tb_gds.gd_type_cd "\
+            + "where recipe_nm like '"+ recipe_nm + "' order by rand();"
 
     cursor.execute(strSql)
     result = cursor.fetchall()
@@ -61,7 +61,7 @@ def third(request):
   lon = request.POST.get("lon")
   lat = request.POST.get("lat")
   cursor = connection.cursor()
-  sqlMap = "select ent_num, ent_nm, map_y, map_x,ent_phone,ent_addr, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(MAP_Y, MAP_X))) as ranking from tb_ent limit 3;"
+  sqlMap = "select ent_num, ent_nm, map_y, map_x,ent_phone,ent_addr, dense_rank() over (order by ST_DISTANCE_SPHERE(POINT("+lon+", "+lat+"), POINT(map_y, map_x))) as ranking from tb_ent limit 3;"
 
   cursor.execute(sqlMap)
   result_map = dictfetchall(cursor)
